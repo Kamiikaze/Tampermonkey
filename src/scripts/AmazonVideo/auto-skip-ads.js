@@ -1,15 +1,15 @@
 // ==UserScript==
-// @name         Amazon Video AutoSkip ADs
-// @name:de         Amazon Video Automatisch Werbung überspringen
-// @namespace    https://greasyfork.org/users/928242
-// @version      0.6
-// @description  Auto Skip Ads by watching Amazon Prime Video
-// @description:de  Überspringt automatisch die Werbung beim ansehen von Videos auf Amazon Prime.
-// @author       Kamikaze (https://github.com/Kamiikaze)
-// @match        https://www.amazon.de/gp/video/detail/*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=amazon.de
-// @grant        none
-// @license      MIT
+// @name         	Auto Skip ADs, Summary & More | Amazon Video
+// @name:de         Automatisches Überspringen von Werbung, Zusammenfassung & mehr | Amazon Video
+// @namespace   	https://greasyfork.org/users/928242
+// @version     	0.6
+// @description  	Automatically skips ads, recaps, previews and more when watching videos on Amazon Prime.
+// @description:de  Überspringt automatisch Werbung, Zusammenfassungen, Vorschauen und mehr, wenn du Videos auf Amazon Prime ansiehst.
+// @author       	Kamikaze (https://github.com/Kamiikaze)
+// @match        	https://www.amazon.de/gp/video/detail/*
+// @icon         	https://www.google.com/s2/favicons?sz=64&domain=amazon.de
+// @grant        	none
+// @license      	MIT
 // ==/UserScript==
 
 
