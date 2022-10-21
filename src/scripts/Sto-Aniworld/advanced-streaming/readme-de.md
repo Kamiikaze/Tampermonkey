@@ -1,3 +1,3 @@
-# TITEL
+# Erweitertes Streaming | aniworld.to & s.to
 
-BESCHREIBUNG
+Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
