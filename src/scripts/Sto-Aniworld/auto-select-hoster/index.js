@@ -1,16 +1,18 @@
 // ==UserScript==
-// @name         Auto Select Favorite Hoster | aniworld.to & s.to
-// @namespace    https://greasyfork.org/users/928242
-// @version      1.1
-// @description  Automatically opens your Stream on your favorite Hoster by order.
-// @author       Kamikaze (https://github.com/Kamiikaze)
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=aniworld.to
-// @match        https://s.to/serie/stream/*
-// @match        https://serien.sx/serie/stream/*
-// @match        https://anicloud.io/anime/stream/*
-// @match        https://aniworld.to/anime/stream/*
-// @grant        none
-// @license      MIT
+// @name         	Auto-select preferred Hoster | aniworld.to & s.to
+// @name:de			Automatische Auswahl des bevorzugten Hosters | aniworld.to & s.to
+// @namespace    	https://greasyfork.org/users/928242
+// @version      	1.1
+// @description  	Automatically opens the stream on your preferred hoster by order.
+// @description:de	Öffnet automatisch den Stream auf Ihrem bevorzugten Hoster nach Reihenfolge.
+// @author       	Kamikaze (https://github.com/Kamiikaze)
+// @icon         	https://www.google.com/s2/favicons?sz=64&domain=aniworld.to
+// @match        	https://s.to/serie/stream/*
+// @match        	https://serien.sx/serie/stream/*
+// @match        	https://anicloud.io/anime/stream/*
+// @match        	https://aniworld.to/anime/stream/*
+// @grant        	none
+// @license      	MIT
 // ==/UserScript==
 
 

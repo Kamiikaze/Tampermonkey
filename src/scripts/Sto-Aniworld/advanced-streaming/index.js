@@ -1,16 +1,18 @@
 // ==UserScript==
-// @name         Advanced Streaming for aniworld & s.to
-// @namespace    https://greasyfork.org/users/928242
-// @version      2.2
-// @description  Minimize page elements to fit smaller screens and added some QoL.
-// @author       Kamikaze (https://github.com/Kamiikaze)
-// @iconURL      https://s.to/favicon.ico
-// @match        https://s.to/serie/stream/*
-// @match        https://serien.sx/serie/stream/*
-// @match        https://anicloud.io/anime/stream/*
-// @match        https://aniworld.to/anime/stream/*
-// @grant        none
-// @license      MIT
+// @name         	Advanced Streaming | aniworld.to & s.to
+// @name:de			Erweitertes Streaming | aniworld.to & s.to
+// @namespace    	https://greasyfork.org/users/928242
+// @version      	2.2
+// @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
+// @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
+// @author       	Kamikaze (https://github.com/Kamiikaze)
+// @iconURL      	https://s.to/favicon.ico
+// @match        	https://s.to/serie/stream/*
+// @match        	https://serien.sx/serie/stream/*
+// @match        	https://anicloud.io/anime/stream/*
+// @match        	https://aniworld.to/anime/stream/*
+// @grant        	none
+// @license      	MIT
 // ==/UserScript==
 
 
