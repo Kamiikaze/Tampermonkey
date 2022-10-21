@@ -2,7 +2,7 @@
 // @name         	Button to copy the raw file URL | Github
 // @name:de			Button zum Kopieren der Raw-Datei URL | Github
 // @namespace  		https://greasyfork.org/users/928242
-// @version      	1.0
+// @version      	1.1
 // @description  	Adds a button at the end of each file row to copy the raw file URL
 // @description:de  Fügt am Ende jeder Dateizeile eine Schaltfläche zum Kopieren der Raw File URL hinzu
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -27,14 +27,20 @@ const waitForFilelist = setInterval(() => {
 }, 1000)
 
 function appendButtons(fileList) {
-	for ( let i = 1; i < fileList.length; i++ ) {
+	for ( let i = 0; i < fileList.length; i++ ) {
 		const file = fileList[i]
+
+		if (
+			file.classList.contains("sr-only") ||
+			file.childElementCount !== 4
+		) continue;
+
 		const fileUrl = file.querySelector('div:nth-child(2) .js-navigation-open').href
 		const rawFileUrl = fileUrl.replace('/blob/', '/raw/')
 
 		file.append(creatyCopyButton(rawFileUrl))
 	}
-	clearInterval(waitForFilelist)
+	// clearInterval(waitForFilelist)
 };
 
 function creatyCopyButton(copyText) {
