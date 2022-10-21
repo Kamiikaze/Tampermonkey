@@ -1,14 +1,16 @@
 // ==UserScript==
-// @name         Skip Steam Age Check
-// @namespace    https://greasyfork.org/users/928242
-// @version      0.1
-// @description  Skiping Age Check at Steam Website
-// @author       Kamikaze (https://github.com/Kamiikaze)
-// @match        https://store.steampowered.com/agecheck/*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=steampowered.com
-// @grant        none
-// @run-at       document-ready
-// @license      MIT
+// @name       		Skip Steam Age Check
+// @name:de			Steam Altersprüfung überspringen
+// @namespace  		https://greasyfork.org/users/928242
+// @version    		1.0
+// @description		Skip the age check on the Steam website
+// @description:de	Überspringen der Altersprüfung auf der Steam-Website
+// @author       	Kamikaze (https://github.com/Kamiikaze)
+// @match        	https://store.steampowered.com/agecheck/*
+// @icon         	https://www.google.com/s2/favicons?sz=64&domain=steampowered.com
+// @grant        	none
+// @run-at       	document-ready
+// @license      	MIT
 // ==/UserScript==
 
 setInterval( () => {
