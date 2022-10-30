@@ -6,6 +6,7 @@
 // @description		Skip the age check on the Steam website
 // @description:de	Überspringen der Altersprüfung auf der Steam-Website
 // @author       	Kamikaze (https://github.com/Kamiikaze)
+// @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
 // @match        	https://store.steampowered.com/agecheck/*
 // @icon         	https://www.google.com/s2/favicons?sz=64&domain=steampowered.com
 // @grant        	none

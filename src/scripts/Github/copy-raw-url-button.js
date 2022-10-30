@@ -6,6 +6,7 @@
 // @description  	Adds a button at the end of each file row to copy the raw file URL
 // @description:de  Fügt am Ende jeder Dateizeile eine Schaltfläche zum Kopieren der Raw File URL hinzu
 // @author       	Kamikaze (https://github.com/Kamiikaze)
+// @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
 // @match        	https://github.com/*
 // @icon         	https://www.google.com/s2/favicons?sz=64&domain=github.com
 // @run-at       	document-ready

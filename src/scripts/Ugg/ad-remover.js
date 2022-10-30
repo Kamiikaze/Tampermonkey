@@ -1,13 +1,14 @@
 // ==UserScript==
-// @name         u.gg AD remove
-// @namespace    https://greasyfork.org/users/928242
-// @version      1.0
-// @description  Removes AD and unnecessary sections
-// @author       Kamikaze (https://github.com/Kamiikaze)
-// @match        https://u.gg/lol/champions/*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=u.gg
-// @grant        none
-// @license      MIT
+// @name         	u.gg AD remove
+// @namespace    	https://greasyfork.org/users/928242
+// @version      	1.0
+// @description 	Removes AD and unnecessary sections
+// @author      	Kamikaze (https://github.com/Kamiikaze)
+// @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
+// @match        	https://u.gg/lol/champions/*
+// @icon         	https://www.google.com/s2/favicons?sz=64&domain=u.gg
+// @grant        	none
+// @license      	MIT
 // ==/UserScript==
 
 function GM_addStyle(css) {

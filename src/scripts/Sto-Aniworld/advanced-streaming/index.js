@@ -6,6 +6,7 @@
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
+// @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
 // @iconURL      	https://s.to/favicon.ico
 // @match        	https://s.to/serie/stream/*
 // @match        	https://serien.sx/serie/stream/*

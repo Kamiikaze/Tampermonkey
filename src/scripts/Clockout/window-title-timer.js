@@ -6,6 +6,7 @@
 // @description     Adding your current work time to page titel. No need to switch tab anymore to see your work time.
 // @description:de  Zeigt die Arbeitszeit im Seitentitel an. Kein lästiges Tab wechseln mehr um die Arbeitszeit zu sehen.
 // @author          Kamikaze (https://github.com/Kamiikaze)
+// @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
 // @match           https://www.clockout.me/*
 // @icon            https://www.google.com/s2/favicons?sz=64&domain=clockout.me
 // @grant           none

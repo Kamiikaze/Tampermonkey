@@ -6,6 +6,7 @@
 // @description  	Automatically opens the stream on your preferred hoster by order.
 // @description:de	Öffnet automatisch den Stream auf Ihrem bevorzugten Hoster nach Reihenfolge.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
+// @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
 // @icon         	https://www.google.com/s2/favicons?sz=64&domain=aniworld.to
 // @match        	https://s.to/serie/stream/*
 // @match        	https://serien.sx/serie/stream/*

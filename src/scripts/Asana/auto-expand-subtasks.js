@@ -6,6 +6,7 @@
 // @description     Auto Expand sub-tasks of selected Task and collapse other Tasks.
 // @description:de  Klappt automatisch die Unteraufgaben der ausgewählten Aufgabe aus und schließt die anderen.
 // @author          Kamikaze (https://github.com/Kamiikaze)
+// @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
 // @match           https://app.asana.com/*
 // @icon            https://www.google.com/s2/favicons?sz=64&domain=asana.com
 // @grant           none

@@ -6,6 +6,7 @@
 // @description  	Automatically skips ads, recaps, previews and more when watching videos on Amazon Prime.
 // @description:de  Überspringt automatisch Werbung, Zusammenfassungen, Vorschauen und mehr, wenn du Videos auf Amazon Prime ansiehst.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
+// @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
 // @match        	https://www.amazon.de/gp/video/detail/*
 // @icon         	https://www.google.com/s2/favicons?sz=64&domain=amazon.de
 // @grant        	none

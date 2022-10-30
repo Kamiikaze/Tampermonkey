@@ -1,13 +1,14 @@
 // ==UserScript==
-// @name         YouTube Magic Actions
-// @namespace    https://greasyfork.org/users/928242
-// @version      1.0
-// @description  Centers the Menu to the Bottom of window as sticky and decrease the size
-// @author       Kamikaze (https://github.com/Kamiikaze)
-// @match        https://www.youtube.com/watch?v=*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=youtube.com
-// @grant        none
-// @license      MIT
+// @name         	YouTube Magic Actions
+// @namespace    	https://greasyfork.org/users/928242
+// @version      	1.0
+// @description  	Centers the Menu to the Bottom of window as sticky and decrease the size
+// @author       	Kamikaze (https://github.com/Kamiikaze)
+// @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
+// @match        	https://www.youtube.com/watch?v=*
+// @icon         	https://www.google.com/s2/favicons?sz=64&domain=youtube.com
+// @grant        	none
+// @license      	MIT
 // ==/UserScript==
 
 function GM_addStyle(css) {
