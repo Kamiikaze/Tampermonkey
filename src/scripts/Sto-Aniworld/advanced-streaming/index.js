@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de			Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	2.2
+// @version      	2.3
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -39,6 +39,15 @@ const enableAddTrailerSearchLink = true
 // Adding a small box at bottom left to search the Anime on sites like MyAnimeList, Crunchyroll & more
 const enableAddAnimeSearchBox = true
 
+// Enable/Disable search providers by changing the value either to true or false
+// If you want to add your own provider let me know
+const searchProviderList = {
+      'Crunchyroll': true,
+      'aniSearch':   true,
+      'AnimePlanet': true,
+      'MyAnimeList': true,
+      'AmazonVideo': true,
+}
 
 
 // # # # # # #
@@ -180,16 +189,19 @@ function addAnimeSearchBox() {
 		{domain: "anisearch.de", searchUrl: "https://www.anisearch.de/anime/index?text=#TITEL#", name: "aniSearch" },
 		{domain: "anime-planet.com", searchUrl: "https://www.anime-planet.com/anime/all?name=#TITEL#", name: "AnimePlanet" },
 		{domain: "myanimelist.net", searchUrl: "https://myanimelist.net/anime.php?q=#TITEL#&cat=anime", name: "MyAnimeList" },
-		{domain: "amazon.de", searchUrl: "https://www.amazon.de/s?k=test&i=instant-video", name: "Amazon Video" },
+		{domain: "amazon.de", searchUrl: "https://www.amazon.de/s?k=#TITEL#&i=instant-video", name: "AmazonVideo" },
 	]
 
 	for (let i = 0; i < sites.length; i++) {
 		const site = sites[i]
+
+		if (!searchProviderList[site.name]) return;
+
 		const siteElement = document.createElement('a');
 		siteElement.classList.add("sites")
 		siteElement.target = "_blank"
 		siteElement.href = site.searchUrl.replace("#TITEL#", seriesTitel)
-		siteElement.innerHTML = `<img src="https://www.google.com/s2/favicons?sz=64&domain=${site.domain}"/>` + site.name
+		siteElement.innerHTML = `<img src="https://www.google.com/s2/favicons?sz=64&domain=${site.domain}" alt='${site.name} Logo Icon' />` + site.name
 
 		searchBoxEl.append(siteElement)
 		// console.log(siteElement)
@@ -291,8 +303,7 @@ function nextEpisode(currSeason, currEpisode, maxSeasons, maxEpisodes) {
 
 	if ( !nextEpisode ) return
 
-	const newPath = window.location.pathname.split('/').slice(0, 4).join("/") + `/staffel-${nextSeason}/episode-${nextEpisode}`
-	window.location.pathname = newPath
+	window.location.pathname = window.location.pathname.split( '/' ).slice( 0, 4 ).join( "/" ) + `/staffel-${ nextSeason }/episode-${ nextEpisode }`
 }
 
 
