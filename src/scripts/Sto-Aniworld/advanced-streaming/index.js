@@ -82,7 +82,6 @@ const hideSeenEpisodes = true
 /* global Logger getStreamData waitForElm addGlobalStyle */
 
 const log = new Logger("Advanced Streaming");
-log.setLogLevel(5);
 let streamData = null;
 
 (async () => {
