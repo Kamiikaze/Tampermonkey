@@ -2,7 +2,7 @@
 // @name         	Auto-select preferred Hoster | aniworld.to & s.to
 // @name:de			Automatische Auswahl des bevorzugten Hosters | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	2.0
+// @version      	2.1
 // @description  	Automatically opens the stream on your preferred hoster by order.
 // @description:de	Öffnet automatisch den Stream auf Ihrem bevorzugten Hoster nach Reihenfolge.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
