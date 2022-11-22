@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de			Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	2.3
+// @version      	3.0
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -12,6 +12,7 @@
 // @match        	https://serien.sx/serie/stream/*
 // @match        	https://anicloud.io/anime/stream/*
 // @match        	https://aniworld.to/anime/stream/*
+// @require         https://greasyfork.org/scripts/455253-kamikaze-script-utils/code/Kamikaze'%20Script%20Utils.js
 // @grant        	none
 // @license      	MIT
 // ==/UserScript==
@@ -40,14 +41,17 @@ const enableAddTrailerSearchLink = true
 // Adding a small box at bottom left to search the Anime on sites like MyAnimeList, Crunchyroll & more
 const enableAddAnimeSearchBox = true
 
+// Adding a small button at the right corner of the video frame to get to the next episode
+const enableEpisodeNavButtons = true
+
 // Enable/Disable search providers by changing the value either to true or false
 // If you want to add your own provider let me know
 const searchProviderList = {
-      'Crunchyroll': true,
-      'aniSearch':   true,
-      'AnimePlanet': true,
-      'MyAnimeList': true,
-      'AmazonVideo': true,
+	'Crunchyroll': false,
+	'aniSearch':   false,
+	'AnimePlanet': false,
+	'MyAnimeList': true,
+	'AmazonVideo': true,
 }
 
 
@@ -75,11 +79,15 @@ const hideSeenEpisodes = true
 
 /*** DO NOT CHANGE BELOW ***/
 
+/* global Logger getStreamData waitForElm addGlobalStyle */
 
+const log = new Logger("Advanced Streaming");
+log.setLogLevel(5);
+let streamData = null;
 
-const thisFixesJustAnError = 'TrUsTmEiAmApRoFeSsIoNaL';
+(async () => {
 
-(() => {
+	streamData = await getStreamData()
 
 	// Features
 
@@ -92,6 +100,8 @@ const thisFixesJustAnError = 'TrUsTmEiAmApRoFeSsIoNaL';
 	if (enableAddTrailerSearchLink) addTrailerSearchLink()
 
 	if (enableAddAnimeSearchBox) addAnimeSearchBox()
+
+	if (enableEpisodeNavButtons) addEpisodeNavButtons()
 
 	// Styles
 
@@ -120,6 +130,7 @@ const thisFixesJustAnError = 'TrUsTmEiAmApRoFeSsIoNaL';
 	}
 
 	if (hideSeenEpisodes) {
+		if (streamData.currentEpisode == 0) return
 		addGlobalStyle(`
             #stream > ul:nth-child(4) li .seen {
                 display: none;
@@ -129,38 +140,32 @@ const thisFixesJustAnError = 'TrUsTmEiAmApRoFeSsIoNaL';
 
 })();
 
-
-
 function shortWindowTitle() {
-	const windowTitleArray = window.document.title.split(" von ")
-
-	const season = "S" + windowTitleArray[0].split(" ").slice(3,4)
-	const episode = "E" + windowTitleArray[0].split(" ").slice(1,2)
-
-	const name = windowTitleArray[1].split("|")[0]
-	const site = windowTitleArray[1].split("|")[1].split(" - ")[0]
-
-	window.document.title = `${season}${episode} - ${name} | ${site}`
+	let pageTitle = ""
+	if (streamData.currentSeason > 0) pageTitle += "S" + streamData.currentSeason
+	if (streamData.currentEpisode > 0) pageTitle += "E" + streamData.currentEpisode
+	window.document.title = `${ (pageTitle.length > 1) ? pageTitle + " - " : ""}${streamData.title} | ${streamData.host}`
 }
 
-function hideSeasonSuggestions() {
-	const container = document.querySelector(".ContentContainerBox")
+async function hideSeasonSuggestions() {
+	const container = await waitForElm(".ContentContainerBox")
 	if (!container) return
 	container.style = "display: none;"
+	log.info("Hided Season Suggestions")
 }
 
-function closeMenuOnHoverLeave() {
-	const menu = document.querySelector(".dd")
-	const modal = document.querySelector(".modal")
+async function closeMenuOnHoverLeave() {
+	const menu = await waitForElm(".dd")
+	const modal = await waitForElm(".modal")
 
 	menu.addEventListener('mouseleave', () => {
 		modal.style = "display:none"
 	})
 }
 
-function addTrailerSearchLink() {
-	const animeTitle = document.querySelector(".series-title > h1 > span").innerText
-	const trailerBoxEl = document.querySelector(".add-series")
+async function addTrailerSearchLink() {
+	const animeTitle = streamData.title
+	const trailerBoxEl = await waitForElm(".add-series")
 
 	const ytSearchLink = "https://www.youtube.com/results?search_query="
 
@@ -173,14 +178,15 @@ function addTrailerSearchLink() {
 	trailerBoxEl.append(searchTrailerEl)
 }
 
-function addAnimeSearchBox() {
+async function addAnimeSearchBox() {
 	if (window.location.hostname !== 'aniworld.to') return
-	const rightColEl = document.getElementsByClassName("add-series")[0]
-	const seriesTitel = document.querySelector("div.series-title > h1 > span").innerText
+	const rightColEl = await waitForElm(".add-series")
+	const seriesTitel = streamData.title
 	const searchBoxEl = document.createElement('div')
 	searchBoxEl.classList.add('anime-search')
 	const searchBoxTitel = document.createElement('p')
-	searchBoxTitel.innerText = "Search Anime at:"
+	searchBoxTitel.innerText = "Anime suchen bei:"
+
 
 	rightColEl.append(searchBoxEl)
 	searchBoxEl.append(searchBoxTitel)
@@ -196,30 +202,17 @@ function addAnimeSearchBox() {
 	for (let i = 0; i < sites.length; i++) {
 		const site = sites[i]
 
-		if (!searchProviderList[site.name]) return;
+		if (searchProviderList[site.name]) {
+			const siteElement = document.createElement('a');
+			siteElement.classList.add("sites")
+			siteElement.target = "_blank"
+			siteElement.href = site.searchUrl.replace("#TITEL#", seriesTitel)
+			siteElement.innerHTML = `<img src="https://www.google.com/s2/favicons?sz=64&domain=${site.domain}" alt='${site.name} Logo Icon' />` + site.name
 
-		const siteElement = document.createElement('a');
-		siteElement.classList.add("sites")
-		siteElement.target = "_blank"
-		siteElement.href = site.searchUrl.replace("#TITEL#", seriesTitel)
-		siteElement.innerHTML = `<img src="https://www.google.com/s2/favicons?sz=64&domain=${site.domain}" alt='${site.name} Logo Icon' />` + site.name
-
-		searchBoxEl.append(siteElement)
-		// console.log(siteElement)
-
+			searchBoxEl.append(siteElement)
+		}
 	}
 }
-
-function addGlobalStyle(css) {
-	var head, style;
-	head = document.getElementsByTagName('head')[0];
-	if (!head) { return; }
-	style = document.createElement('style');
-	style.type = 'text/css';
-	style.innerHTML = css.replace(/;/g, ' !important;');
-	head.appendChild(style);
-}
-
 
 
 addGlobalStyle(`
@@ -235,6 +228,7 @@ addGlobalStyle(`
     position: fixed;
     left: 0;
     bottom: -8px;
+    z-index: 99;
 }
 
 .anime-search .sites {
@@ -250,14 +244,10 @@ addGlobalStyle(`
 `)
 
 
-function addEpisodeNavButtons() {
+async function addEpisodeNavButtons() {
 
 	const episodeControls = document.createElement('div')
 	episodeControls.id = "episodeControls"
-
-	const prevBtn = document.createElement('button')
-	prevBtn.classList.add('prevBtn')
-	prevBtn.innerText = 'Previous'
 
 	const nextBtn = document.createElement('button')
 	nextBtn.classList.add('nextBtn')
@@ -265,36 +255,37 @@ function addEpisodeNavButtons() {
 
 
 
-	const currentSeason = parseInt(window.location.pathname.split('/')[4].split('-')[1])
-	const currentEpisode = parseInt(window.location.pathname.split('/')[5].split('-')[1]) // add return if no episode selected
-	const maxSeasons = parseInt(document.querySelector("#stream > ul:nth-child(1)").childElementCount - 1)
-	const maxEpisodes = parseInt(document.querySelector("#stream > ul:nth-child(4)").childElementCount - 1)
+	const currentSeason = streamData.currentSeason
+	const currentEpisode = streamData.currentEpisode
+	const maxSeasons = streamData.seasonsCount
+	const maxEpisodes = streamData.episodesCount
 
 	nextBtn.addEventListener("click", function() {
 		nextEpisode(currentSeason, currentEpisode, maxSeasons, maxEpisodes)
 	})
-	episodeControls.append(prevBtn, nextBtn)
+	episodeControls.append(nextBtn)
 
-	const videoContainer = document.querySelector(".hosterSiteVideo")
+	const videoContainer = await waitForElm(".hosterSiteVideo")
 	videoContainer.insertBefore(episodeControls, videoContainer.querySelector(".inSiteWebStream"))
 
 }
-addEpisodeNavButtons()
 
 function nextEpisode(currSeason, currEpisode, maxSeasons, maxEpisodes) {
 
 	let nextEpisode = currEpisode + 1
 	let nextSeason = currSeason
 
+	log.debug({ currSeason, currEpisode, maxSeasons, maxEpisodes, nextEpisode, nextSeason })
+
 	if ( nextEpisode <= maxEpisodes ) {
-		console.log("Next Episode", nextEpisode)
+		log.info("Next Episode", nextEpisode)
 	}
 	if ( nextEpisode > maxEpisodes ) {
 		nextSeason ++
 		if ( nextSeason <= maxSeasons ) {
-			console.log("Next Season", nextSeason)
+			log.info("Next Season", nextSeason)
 			nextEpisode = 1
-			console.log("Next Episode", nextEpisode)
+			log.info("Next Episode", nextEpisode)
 		}
 		if ( nextSeason > maxSeasons ) {
 			nextEpisode = false
@@ -302,7 +293,10 @@ function nextEpisode(currSeason, currEpisode, maxSeasons, maxEpisodes) {
 		}
 	}
 
-	if ( !nextEpisode ) return
+	if ( !nextEpisode ) {
+		alert('Episode not found')
+		return
+	}
 
 	window.location.pathname = window.location.pathname.split( '/' ).slice( 0, 4 ).join( "/" ) + `/staffel-${ nextSeason }/episode-${ nextEpisode }`
 }
@@ -316,7 +310,7 @@ addGlobalStyle(`
     flex-direction: row;
     flex-wrap: nowrap;
     align-content: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin: 10px 0;
 }
@@ -334,11 +328,6 @@ addGlobalStyle(`
     cursor: pointer;
 }
 
-.prevBtn::before {
-    content: "<";
-    padding-right: 8px;
-}
-
 .nextBtn::after {
     content: ">";
     padding-left: 10px;
@@ -346,7 +335,7 @@ addGlobalStyle(`
 
 
 
-`)
+`, false)
 
 
 
