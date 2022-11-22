@@ -5,6 +5,7 @@
 // @version    		1.0.0
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @match        	*://*/*
+// @match        	https://s.to/serie/stream/*
 // @license     	MIT
 // @grant       	none
 // ==/UserScript==
