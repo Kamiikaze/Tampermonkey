@@ -4,6 +4,7 @@
 // @description  	Custom Functions for Kamikaze's Scripts
 // @version    		1.0.0
 // @author       	Kamikaze (https://github.com/Kamiikaze)
+// @match        	*://*/*
 // @license     	MIT
 // @grant       	none
 // ==/UserScript==
