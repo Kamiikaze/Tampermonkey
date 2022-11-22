@@ -27,7 +27,7 @@ class Logger {
 		this.resetStyle = "background: unset; color: unest"
 		this.prefixStyle = this.setPrefixStyle(prefix);
 
-		this.info(`Logger initialized with prefix "${prefix}"`)
+		this.info(`Logger initialized with prefix "${prefix}" and logLevel ${logLevel}`)
 	}
 
 	/*
