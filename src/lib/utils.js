@@ -2,10 +2,8 @@
 // @name        	Kamikaze' Script Utils
 // @namespace    	https://greasyfork.org/users/928242
 // @description  	Custom Functions for Kamikaze's Scripts
-// @version    		1.0.0
+// @version    		1.0.1
 // @author       	Kamikaze (https://github.com/Kamiikaze)
-// @match        	*://*/*
-// @match        	https://s.to/serie/stream/*
 // @license     	MIT
 // @grant       	none
 // ==/UserScript==
