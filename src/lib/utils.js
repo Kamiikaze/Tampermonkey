@@ -2,7 +2,7 @@
 // @name        	Kamikaze' Script Utils
 // @namespace    	https://greasyfork.org/users/928242
 // @description  	Custom Functions for Kamikaze's Scripts
-// @version    		1.0.1
+// @version    		1.0.2
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
 // @grant       	none
@@ -27,7 +27,7 @@ class Logger {
 		this.resetStyle = "background: unset; color: unest"
 		this.prefixStyle = this.setPrefixStyle(prefix);
 
-		this.info(`Logger initialized with prefix "${prefix}"`)
+		this.info(`Logger initialized with prefix "${prefix}" and logLevel ${logLevel}`)
 	}
 
 	/*
