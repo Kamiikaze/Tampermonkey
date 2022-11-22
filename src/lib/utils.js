@@ -90,17 +90,17 @@ function addGlobalStyle(css, important = true) {
  * @param {string} selector - CSS Selector
  * @description Waits for an element to be present in the DOM
  */
-function waitForElm(selector) {
+function waitForElm(selector, parent = document) {
 	return new Promise((resolve, reject) => {
-		if (document.querySelector(selector)) {
+		if (parent.querySelector(selector)) {
 			log.debug("Element found", selector)
-			return resolve(document.querySelector(selector));
+			return resolve(parent.querySelector(selector));
 		}
 
 		const observer = new MutationObserver(mutations => {
-			if (document.querySelector(selector)) {
+			if (parent.querySelector(selector)) {
 				log.debug("Element found", selector)
-				resolve(document.querySelector(selector));
+				resolve(parent.querySelector(selector));
 				observer.disconnect();
 			}
 		});
