@@ -114,7 +114,7 @@ let streamData = null;
 	if (hideDescriptionEdit) {
 		addGlobalStyle(`
             .descriptionSpoilerLink, .descriptionSpoilerPlaceholder,
-            .submitNewDescription, .submitNewTitle .hosterSectionTitle {
+            .submitNewDescription, .submitNewTitle, .hosterSectionTitle {
                 display: none;
             }
         `)
@@ -129,7 +129,7 @@ let streamData = null;
 	}
 
 	if (hideSeenEpisodes) {
-		if (streamData.currentEpisode == 0) return
+		if (streamData.currentEpisode === 0) return
 		addGlobalStyle(`
             #stream > ul:nth-child(4) li .seen {
                 display: none;
