@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de			Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.0
+// @version      	3.0.1
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -114,7 +114,7 @@ let streamData = null;
 	if (hideDescriptionEdit) {
 		addGlobalStyle(`
             .descriptionSpoilerLink, .descriptionSpoilerPlaceholder,
-            .submitNewDescription, .hosterSectionTitle {
+            .submitNewDescription, .submitNewTitle .hosterSectionTitle {
                 display: none;
             }
         `)
