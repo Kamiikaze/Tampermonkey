@@ -2,7 +2,7 @@
 // @name         	Auto Skip ADs, Summary & More | Amazon Video
 // @name:de         Automatisches Überspringen von Werbung, Zusammenfassung & mehr | Amazon Video
 // @namespace   	https://greasyfork.org/users/928242
-// @version     	0.6
+// @version     	0.7
 // @description  	Automatically skips ads, recaps, previews and more when watching videos on Amazon Prime.
 // @description:de  Überspringt automatisch Werbung, Zusammenfassungen, Vorschauen und mehr, wenn du Videos auf Amazon Prime ansiehst.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -21,7 +21,7 @@ const skipAdButtonText = 'Überspringen'
 const scanInterval = 3
 
 // Start scanning again in X minutes after AD has been skipped
-const delayScanInterval = 5
+// const delayScanInterval = 5
 
 
 /* ! ! ! ! ! ! ! !
@@ -62,10 +62,14 @@ async function scanForADs() {
 // Skipping the AD and restart delayed Scanning
 function skipAd() {
 	setTimeout( () => {
-		skipAdEl.click()
-		console.log(clp + "Skipped AD")
+		try {
+			skipAdEl.click()
+			console.log(clp + "Skipped AD")
+		} catch(err) {
+			console.error(clp + "Coudn't Skip Ad or Click Element")
+		}
 		restartAdScan()
-	}, 3000 )
+	}, 1000 )
 }
 
 function skipCredits() {
@@ -117,8 +121,9 @@ function restartAdScan() {
 	skipAdEl = ''
 	skipButtonEl = ''
 
-	console.log(clp + `Restarting AdScan in ${delayScanInterval} Minutes.`)
+	// console.log(clp + `Restarting AdScan in ${delayScanInterval} Minutes.`)
 
-	setTimeout( () => { startAdScan() }, delayScanInterval * 60 * 1000 )
+	// setTimeout( () => { startAdScan() }, delayScanInterval * 60 * 1000 )
+	setTimeout( () => { startAdScan() }, 1000 )
 }
 
