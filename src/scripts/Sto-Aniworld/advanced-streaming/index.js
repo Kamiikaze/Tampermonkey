@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de			Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.3.0
+// @version      	3.3.1
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -227,18 +227,26 @@ async function closeMenuOnHoverLeave() {
 }
 
 async function addTrailerSearchLink() {
-	const animeTitle = streamData.title
-	const trailerBoxEl = await waitForElm( ".add-series" )
+	const seriesTitle = streamData.title
+	const trailerBoxEl = await waitForElm( ".add-series .collections" )
 
 	const ytSearchLink = "https://www.youtube.com/results?search_query="
 
-	const searchTrailerEl = document.createElement( "a" )
-	searchTrailerEl.href = ytSearchLink + animeTitle + ' Trailer Deutsch'
-	searchTrailerEl.text = "Trailer suchen"
-	searchTrailerEl.classList.add( "trailerButton" )
-	searchTrailerEl.target = "_blank"
+	const searchTrailerEl = document.createElement( "li" )
+	searchTrailerEl.classList.add('col-md-12', 'col-sm-12', 'col-xs-6', 'buttonAction');
+	searchTrailerEl.innerHTML = `
+		<div title="Deutschen Trailer von ${seriesTitle} bei YouTube suchen." itemprop="trailer" itemscope="" itemtype="http://schema.org/VideoObject">
+			<a itemprop="url" target="_blank" href="${ytSearchLink+seriesTitle} Trailer Deutsch"><i class="fas fa-external-link-alt"></i><span class="collection-name">Trailer suchen</span></a>
+			<meta itemprop="name" content="${seriesTitle} Trailer">
+			<meta itemprop="description" content="Nach Offiziellen Trailer der TV-Serie ${seriesTitle} bei YouTube suchen.">
+			<meta itemprop="thumbnailUrl" content="https://zrt5351b7er9.static-webarchive.org/img/facebook.jpg">
+		</div>
+`
+	const beforeElement = trailerBoxEl.querySelector(`li:nth-child(${trailerBoxEl.childElementCount})`);
 
-	trailerBoxEl.append( searchTrailerEl )
+	trailerBoxEl.insertBefore( searchTrailerEl, beforeElement )
+
+
 }
 
 async function addAnimeSearchBox() {
