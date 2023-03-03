@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de			Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.3.1
+// @version      	3.3.2
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -44,18 +44,28 @@ const enableAddTrailerSearchLink = true
 // Adding a small box at bottom left to search the Anime on sites like MyAnimeList, Crunchyroll & more
 const enableAddAnimeSearchBox = true
 
-// Adding a small button at the right corner of the video frame to get to the next episode
-const enableEpisodeNavButtons = true
-
 // Enable/Disable search providers by changing the value either to true or false
 // If you want to add your own provider let me know
-const searchProviderList = {
+const animeSearchProviderList = {
 	'Crunchyroll': false,
 	'aniSearch': false,
 	'AnimePlanet': false,
 	'MyAnimeList': true,
 	'AmazonVideo': true,
 }
+
+// Adding a small box at bottom left to search the Series on sites like Amazon, Netflix & more
+const enableAddSeriesSearchBox = true
+
+// Enable/Disable search providers by changing the value either to true or false
+// If you want to add your own provider let me know
+const seriesSearchProviderList = {
+	'AmazonVideo': true,
+	'Netflix': true,
+}
+
+// Adding a small button at the right corner of the video frame to get to the next episode
+const enableEpisodeNavButtons = true
 
 // Allows filtering the Series Calendar by subscribed series
 // To use this feature you need to go to https://s.to/account/subscribed and wait for the script to save the
@@ -118,6 +128,8 @@ let streamData = null;
 	if ( enableAddTrailerSearchLink ) addTrailerSearchLink()
 
 	if ( enableAddAnimeSearchBox ) addAnimeSearchBox()
+
+	if ( enableAddSeriesSearchBox ) addSeriesSearchBox()
 
 	if ( enableEpisodeNavButtons ) addEpisodeNavButtons()
 
@@ -256,7 +268,7 @@ async function addAnimeSearchBox() {
 	const searchBoxEl = document.createElement( 'div' )
 	searchBoxEl.classList.add( 'anime-search' )
 	const searchBoxTitel = document.createElement( 'p' )
-	searchBoxTitel.innerText = "Anime suchen bei:"
+	searchBoxTitel.innerText = "Anime suchen auf:"
 
 
 	rightColEl.append( searchBoxEl )
@@ -285,7 +297,40 @@ async function addAnimeSearchBox() {
 	for ( let i = 0; i < sites.length; i++ ) {
 		const site = sites[i]
 
-		if ( searchProviderList[site.name] ) {
+		if ( animeSearchProviderList[site.name] ) {
+			const siteElement = document.createElement( 'a' );
+			siteElement.classList.add( "sites" )
+			siteElement.target = "_blank"
+			siteElement.href = site.searchUrl.replace( "#TITEL#", seriesTitel )
+			siteElement.innerHTML = `<img src="https://www.google.com/s2/favicons?sz=64&domain=${ site.domain }" alt='${ site.name } Logo Icon' />` + site.name
+
+			searchBoxEl.append( siteElement )
+		}
+	}
+}
+
+async function addSeriesSearchBox() {
+	if ( window.location.hostname !== 's.to' ) return
+	const rightColEl = await waitForElm( ".add-series" )
+	const seriesTitel = streamData.title
+	const searchBoxEl = document.createElement( 'div' )
+	searchBoxEl.classList.add( 'anime-search' )
+	const searchBoxTitel = document.createElement( 'p' )
+	searchBoxTitel.innerText = "Serie suchen auf:"
+
+
+	rightColEl.append( searchBoxEl )
+	searchBoxEl.append( searchBoxTitel )
+
+	const sites = [
+		{ domain: "amazon.de", searchUrl: "https://www.amazon.de/s?k=#TITEL#&i=instant-video", name: "AmazonVideo" },
+		{ domain: "netflix.com", searchUrl: "https://www.netflix.com/search?q=#TITEL#", name: "Netflix" },
+	]
+
+	for ( let i = 0; i < sites.length; i++ ) {
+		const site = sites[i]
+
+		if ( seriesSearchProviderList[site.name] ) {
 			const siteElement = document.createElement( 'a' );
 			siteElement.classList.add( "sites" )
 			siteElement.target = "_blank"
