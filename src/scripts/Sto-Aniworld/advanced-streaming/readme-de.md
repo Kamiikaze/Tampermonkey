@@ -17,3 +17,4 @@ Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Hinzuf�
 * Gesehene Episoden ausblenden
 * Filtert den Release-Kalender nach abonnierten Serien & Anime's
 * Nutze eine Scroll-Leiste für die obere Episodenliste
+* Verbesserte Benutzerfreundlichkeit für Sucheingaben

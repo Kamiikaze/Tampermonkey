@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de			Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.2.1
+// @version      	3.3.0
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -10,10 +10,11 @@
 // @iconURL      	https://s.to/favicon.ico
 // @match        	https://s.to/serie/stream/*
 // @match      		https://s.to/serienkalender
+// @match      		https://s.to/serien
 // @match        	https://s.to/account/subscribed
 // @match        	https://aniworld.to/anime/stream/*
-// @match        	https://aniworld.to/anime/stream/*
 // @match      		https://aniworld.to/animekalender
+// @match      		https://aniworld.to/animes
 // @match        	https://aniworld.to/account/subscribed
 // @require         https://greasyfork.org/scripts/455253-kamikaze-script-utils/code/Kamikaze'%20Script%20Utils.js
 // @grant        	none
@@ -61,6 +62,11 @@ const searchProviderList = {
 // subscribed series. After that you can go to https://s.to/serienkalender and use the filter.
 const enableFilterSeriesCalendar = true
 
+// Enable improved Search Box
+// When pressing a key, search box will be automatically focused. Clicking the search box will select all input.
+// By clicking outside the search box and pressing a key, the search box will be focused and cleared for new input.
+const enableImprovedSearchBox = true
+
 
 // # # # # # #
 // Styling
@@ -96,6 +102,8 @@ let streamData = null;
 ( async () => {
 
 	if ( enableFilterSeriesCalendar ) filterSeriesCalendar()
+
+	if ( enableImprovedSearchBox ) improvedSearchBox()
 
 	streamData = await getStreamData()
 
@@ -521,3 +529,31 @@ div#filterToggleContainer {
     padding: 15px 0 0;
 }
 `, false )
+
+
+
+async function improvedSearchBox() {
+	let doNewSearch = false
+
+	const searchInput = await waitForElm("input#serInput")
+	searchInput.focus()
+
+	document.addEventListener("keypress", () => {
+		searchInput.focus()
+		if (doNewSearch) {
+			searchInput.value = ""
+			doNewSearch = false
+		}
+	})
+
+	searchInput.addEventListener("click", () => {
+		searchInput.select()
+	})
+
+	document.addEventListener("focusout", function (event) {
+		if (event.target.id === "serInput") {
+			doNewSearch = true
+		}
+	})
+}
+
