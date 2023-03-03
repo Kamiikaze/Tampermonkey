@@ -16,3 +16,4 @@ Minimizing page elements to fit smaller screens and adding some usability improv
 * Hide Language Selection
 * Hide Seen Episodes
 * Filter Release Calendar by subscribed Series & Anime's
+* Use a scrollbar for the top episode list
