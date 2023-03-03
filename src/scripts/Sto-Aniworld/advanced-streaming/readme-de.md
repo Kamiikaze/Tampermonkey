@@ -15,3 +15,4 @@ Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und HinzufÃ
 * Bearbeitungslinks ausblenden
 * Sprachauswahl ausblenden
 * Gesehene Episoden ausblenden
+* Filtert den Release-Kalender nach abonnierten Serien & Anime's

@@ -15,3 +15,4 @@ Minimizing page elements to fit smaller screens and adding some usability improv
 * Hide edit links
 * Hide Language Selection
 * Hide Seen Episodes
+* Filter Release Calendar by subscribed Series & Anime's
