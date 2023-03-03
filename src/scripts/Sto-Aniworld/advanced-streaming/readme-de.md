@@ -18,3 +18,4 @@ Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Hinzuf�
 * Filtert den Release-Kalender nach abonnierten Serien & Anime's
 * Nutze eine Scroll-Leiste für die obere Episodenliste
 * Verbesserte Benutzerfreundlichkeit für Sucheingaben
+* Fügt einen Link zur Suche von Serien/Anime im Release-Kalender hinzu

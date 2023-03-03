@@ -2,19 +2,19 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de			Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.3.2
+// @version      	3.3.3
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
 // @iconURL      	https://s.to/favicon.ico
 // @match        	https://s.to/serie/stream/*
-// @match      		https://s.to/serienkalender
-// @match      		https://s.to/serien
+// @match      		https://s.to/serienkalender*
+// @match      		https://s.to/serien*
 // @match        	https://s.to/account/subscribed
 // @match        	https://aniworld.to/anime/stream/*
-// @match      		https://aniworld.to/animekalender
-// @match      		https://aniworld.to/animes
+// @match      		https://aniworld.to/animekalender*
+// @match      		https://aniworld.to/animes*
 // @match        	https://aniworld.to/account/subscribed
 // @require         https://greasyfork.org/scripts/455253-kamikaze-script-utils/code/Kamikaze'%20Script%20Utils.js
 // @grant        	none
@@ -72,6 +72,9 @@ const enableEpisodeNavButtons = true
 // subscribed series. After that you can go to https://s.to/serienkalender and use the filter.
 const enableFilterSeriesCalendar = true
 
+// Adds a link to search series in the release calendar
+const enableAddCalendarSearch = true
+
 // Enable improved Search Box
 // When pressing a key, search box will be automatically focused. Clicking the search box will select all input.
 // By clicking outside the search box and pressing a key, the search box will be focused and cleared for new input.
@@ -104,7 +107,7 @@ const useScrollbarForEpisodeList = true
 
 /*** DO NOT CHANGE BELOW ***/
 
-/* global Logger getStreamData waitForElm addGlobalStyle */
+/* global Logger getStreamData waitForElm addGlobalStyle searchSeries */
 
 const log = new Logger( "Advanced Streaming" );
 let streamData = null;
@@ -134,6 +137,8 @@ let streamData = null;
 	if ( enableEpisodeNavButtons ) addEpisodeNavButtons()
 
 	if ( enableFilterSeriesCalendar ) filterSeriesCalendar()
+
+	if ( enableAddCalendarSearch ) addCalendarSearch()
 
 	// Styles
 
@@ -245,31 +250,63 @@ async function addTrailerSearchLink() {
 	const ytSearchLink = "https://www.youtube.com/results?search_query="
 
 	const searchTrailerEl = document.createElement( "li" )
-	searchTrailerEl.classList.add('col-md-12', 'col-sm-12', 'col-xs-6', 'buttonAction');
+	searchTrailerEl.classList.add( 'col-md-12', 'col-sm-12', 'col-xs-6', 'buttonAction' );
 	searchTrailerEl.innerHTML = `
-		<div title="Deutschen Trailer von ${seriesTitle} bei YouTube suchen." itemprop="trailer" itemscope="" itemtype="http://schema.org/VideoObject">
-			<a itemprop="url" target="_blank" href="${ytSearchLink+seriesTitle} Trailer Deutsch"><i class="fas fa-external-link-alt"></i><span class="collection-name">Trailer suchen</span></a>
-			<meta itemprop="name" content="${seriesTitle} Trailer">
-			<meta itemprop="description" content="Nach Offiziellen Trailer der TV-Serie ${seriesTitle} bei YouTube suchen.">
+		<div title="Deutschen Trailer von ${ seriesTitle } bei YouTube suchen." itemprop="trailer" itemscope="" itemtype="http://schema.org/VideoObject">
+			<a itemprop="url" target="_blank" href="${ ytSearchLink + seriesTitle } Trailer Deutsch"><i class="fas fa-external-link-alt"></i><span class="collection-name">Trailer suchen</span></a>
+			<meta itemprop="name" content="${ seriesTitle } Trailer">
+			<meta itemprop="description" content="Nach Offiziellen Trailer der TV-Serie ${ seriesTitle } bei YouTube suchen.">
 			<meta itemprop="thumbnailUrl" content="https://zrt5351b7er9.static-webarchive.org/img/facebook.jpg">
-		</div>
-`
-	const beforeElement = trailerBoxEl.querySelector(`li:nth-child(${trailerBoxEl.childElementCount})`);
+		</div>`
 
 	increaseHeaderSize()
 
-	trailerBoxEl.insertBefore( searchTrailerEl, beforeElement )
+	addLinkToList( trailerBoxEl, searchTrailerEl )
 
+}
+
+async function addCalendarSearch() {
+	const seriesTitle = streamData.title
+	const calendarBoxEl = await waitForElm( ".add-series .collections" )
+
+	const calendarUrl = (() => {
+		if ( getStreamPageLocation().host === "s.to" ) {
+			return "https://s.to/serienkalender?q=" + seriesTitle
+		} else if ( getStreamPageLocation().host === "aniworld.to" ) {
+			return "https://aniworld.to/animekalender?q=" + seriesTitle
+		} else {
+			log.error( "Host not supported" )
+		}
+	})();
+	const searchCalendarEl = document.createElement( "li" )
+	searchCalendarEl.classList.add( 'col-md-12', 'col-sm-12', 'col-xs-6', 'buttonAction' );
+	searchCalendarEl.innerHTML = `
+		<div title="Suche ${ seriesTitle } im Release Kalender." itemprop="trailer" itemscope="" itemtype="http://schema.org/VideoObject">
+			<a itemprop="url" target="_blank" href="${ calendarUrl }"><i class="fas fa-external-link-alt"></i><span class="collection-name">Im Kalender suchen</span></a>
+			<meta itemprop="name" content="${ seriesTitle } Trailer">
+			<meta itemprop="description" content="Suche ${ seriesTitle } im Release Kalender.">
+			<meta itemprop="thumbnailUrl" content="https://zrt5351b7er9.static-webarchive.org/img/facebook.jpg">
+		</div>`
+
+	increaseHeaderSize()
+
+	addLinkToList( calendarBoxEl, searchCalendarEl )
+}
+
+function addLinkToList( parent, el ) {
+	const beforeElement = parent.querySelector( `li:nth-child(${ parent.childElementCount })` );
+
+	parent.insertBefore( el, beforeElement )
 }
 
 function increaseHeaderSize() {
 	const headerHeight = document.querySelector( "section.title" ).offsetHeight
 
-	addGlobalStyle(`
+	addGlobalStyle( `
 	section.title,
 	section.title .backdrop {
 		height: ${ headerHeight + 50 }px;
-	}`, true)
+	}`, true )
 }
 
 async function addAnimeSearchBox() {
@@ -599,25 +636,32 @@ div#filterToggleContainer {
 async function improvedSearchBox() {
 	let doNewSearch = false
 
-	const searchInput = await waitForElm("input#serInput")
+	const searchInput = await waitForElm( "input#serInput" )
 	searchInput.focus()
 
-	document.addEventListener("keypress", () => {
+	if ( window.location.search.includes( "q=" ) ) {
+		const searchQuery = window.location.search.split( "q=" )[1]
+		log.info( `Found search query: ${ searchQuery }` )
+		searchInput.value = decodeURI(searchQuery)
+		searchSeries() // global function
+	}
+
+	document.addEventListener( "keypress", () => {
 		searchInput.focus()
-		if (doNewSearch) {
+		if ( doNewSearch ) {
 			searchInput.value = ""
 			doNewSearch = false
 		}
-	})
+	} )
 
-	searchInput.addEventListener("click", () => {
+	searchInput.addEventListener( "click", () => {
 		searchInput.select()
-	})
+	} )
 
-	document.addEventListener("focusout", function (event) {
-		if (event.target.id === "serInput") {
+	document.addEventListener( "focusout", function ( event ) {
+		if ( event.target.id === "serInput" ) {
 			doNewSearch = true
 		}
-	})
+	} )
 }
 

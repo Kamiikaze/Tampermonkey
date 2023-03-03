@@ -18,3 +18,4 @@ Minimizing page elements to fit smaller screens and adding some usability improv
 * Filter Release Calendar by subscribed Series & Anime's
 * Use a scrollbar for the top episode list
 * Improved usability for search inputs
+* Added a link to search series/anime on release calendar
