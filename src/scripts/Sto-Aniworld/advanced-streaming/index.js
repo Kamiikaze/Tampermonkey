@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de			Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.3.3
+// @version      	3.3.4
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -140,6 +140,9 @@ let streamData = null;
 
 	if ( enableAddCalendarSearch ) addCalendarSearch()
 
+	fixAnimeTrailerWatchButton()
+
+
 	// Styles
 
 	if ( reducePlayerHeight > 0 ) {
@@ -267,7 +270,7 @@ async function addTrailerSearchLink() {
 
 async function addCalendarSearch() {
 	const seriesTitle = streamData.title
-	const calendarBoxEl = await waitForElm( ".add-series .collections" )
+	const trailerBoxEl = await waitForElm( ".add-series .collections" )
 
 	const calendarUrl = (() => {
 		if ( getStreamPageLocation().host === "s.to" ) {
@@ -290,7 +293,31 @@ async function addCalendarSearch() {
 
 	increaseHeaderSize()
 
-	addLinkToList( calendarBoxEl, searchCalendarEl )
+	addLinkToList( trailerBoxEl, searchCalendarEl )
+}
+
+async function fixAnimeTrailerWatchButton() {
+	const seriesTitle = streamData.title
+	const watchButton = await waitForElm( ".trailerButton" )
+	watchButton.style.display = "none"
+
+	if ( !watchButton ) return
+
+	const trailerBoxEl = await waitForElm( ".add-series .collections" )
+	const watchTrailerPlaceholder = trailerBoxEl.querySelector( `li:nth-child(3)` );
+	watchTrailerPlaceholder.removeChild( watchTrailerPlaceholder.children[0] )
+	const watchTrailerEl = document.createElement( "div" )
+	watchTrailerEl.innerHTML = `
+		<div title="Trailer von ${ seriesTitle } ansehen." itemprop="trailer" itemscope="" itemtype="http://schema.org/VideoObject">
+			<a itemprop="url" target="_blank" href="${ watchButton.href }"><i class="fas fa-external-link-alt"></i><span class="collection-name">Anime-Trailer</span></a>
+			<meta itemprop="name" content="${ seriesTitle } Trailer">
+			<meta itemprop="description" content="Offiziellen Trailer der TV-Serie ${ seriesTitle } jetzt ansehen.">
+			<meta itemprop="thumbnailUrl" content="https://zrt5351b7er9.static-webarchive.org/img/facebook.jpg">
+		</div>`
+
+	watchTrailerPlaceholder.append( watchTrailerEl)
+
+
 }
 
 function addLinkToList( parent, el ) {
