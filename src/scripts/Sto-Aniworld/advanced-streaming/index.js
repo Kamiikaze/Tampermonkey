@@ -2,16 +2,19 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de			Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.0.1
+// @version      	3.1.0
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
 // @iconURL      	https://s.to/favicon.ico
 // @match        	https://s.to/serie/stream/*
-// @match        	https://serien.sx/serie/stream/*
-// @match        	https://anicloud.io/anime/stream/*
+// @match      		https://s.to/serienkalender
+// @match        	https://s.to/account/subscribed
 // @match        	https://aniworld.to/anime/stream/*
+// @match        	https://aniworld.to/anime/stream/*
+// @match      		https://aniworld.to/animekalender
+// @match        	https://aniworld.to/account/subscribed
 // @require         https://greasyfork.org/scripts/455253-kamikaze-script-utils/code/Kamikaze'%20Script%20Utils.js
 // @grant        	none
 // @license      	MIT
@@ -54,6 +57,11 @@ const searchProviderList = {
 	'AmazonVideo': true,
 }
 
+// Allows filtering the Series Calendar by subscribed series
+// To use this feature you need to go to https://s.to/account/subscribed and wait for the script to save the
+// subscribed series. After that you can go to https://s.to/serienkalender and use the filter.
+const enableFilterSeriesCalendar = true
+
 
 // # # # # # #
 // Styling
@@ -86,6 +94,8 @@ let streamData = null;
 
 (async () => {
 
+	if (enableFilterSeriesCalendar) filterSeriesCalendar()
+
 	streamData = await getStreamData()
 
 	// Features
@@ -101,6 +111,8 @@ let streamData = null;
 	if (enableAddAnimeSearchBox) addAnimeSearchBox()
 
 	if (enableEpisodeNavButtons) addEpisodeNavButtons()
+
+	if (enableFilterSeriesCalendar) filterSeriesCalendar()
 
 	// Styles
 
@@ -331,11 +343,126 @@ addGlobalStyle(`
     content: ">";
     padding-left: 10px;
 }
-
-
-
 `, false)
 
 
+async function filterSeriesCalendar() {
+
+	log.info("Filter enabled")
+
+	await getSubscribedSeries()
+
+	let onlySubbedEpisodes = false
+
+	const container = await waitForElm("#seriesContainer")
+
+	if (!container) throw new Error("Could not find seriesContainer")
+
+	const filterToggleContainer = document.createElement("div")
+	filterToggleContainer.id = "filterToggleContainer"
+
+	const filterToggle = document.createElement("button")
+	filterToggle.innerText = "Zeige nur Abonnierte Serien"
+	filterToggle.id = "filterToggleButton"
+	filterToggle.classList.add("button", "blue", "small")
+	filterToggle.addEventListener("click", function() {
+		toggleAiringEpisodes().then(() => {
+			onlySubbedEpisodes = !onlySubbedEpisodes;
+			filterToggle.innerText = onlySubbedEpisodes ? "Zeige alle Serien" : "Zeige nur Abonnierte Serien";
+		}).catch((error) => {
+			log.error(`An error occurred while toggling airing episodes: ${error}`);
+		});
+	});
+
+	filterToggleContainer.prepend(filterToggle)
+
+	container.prepend(filterToggleContainer)
+}
+
+async function getSubscribedSeries() {
+
+	if (!window.location.href.includes("subscribed")) return
+
+	log.info("Getting subscribed series...")
+
+	const container = await waitForElm(".seriesListContainer")
+
+	if (!container) throw new Error("Could not find seriesListContainer")
+
+	const subscsribedTitles = container.querySelectorAll("h3")
+
+	const titles = Array.from( subscsribedTitles).map( title => title.textContent?.trim() || "");
 
 
+	if ( titles.length > 0 ) {
+		log.debug(`Found ${titles.length} subscribed series.`)
+
+		localStorage.setItem("subscribedSeries", JSON.stringify(titles))
+
+		log.info(`Saved ${titles.length} subscribed series.`)
+
+		alert(`Saved ${titles.length} subscribed series.`)
+
+	} else {
+		log.warn("No subscribed series found.")
+		alert("No subscribed series found.")
+	}
+
+	return titles
+}
+
+async function toggleAiringEpisodes() {
+	log.info("Toggling airing episodes...")
+
+	const subscribedSeries = localStorage.getItem("subscribedSeries")
+	log.info(`Subscribed Series: ${subscribedSeries}`)
+
+	if ( !subscribedSeries || subscribedSeries.length === 0 ) {
+		log.warn("No subscribed series found.")
+		alert(`
+No subscribed series found.
+
+To use this feature you need to go to:
+https://s.to/account/subscribed
+and wait for the script to save the subscribed series. After that you can come back and use the filter.`)
+		return
+	}
+
+	const containers = document.querySelectorAll(".seriesListContainer")
+
+	if (!containers) throw new Error("Could not find seriesListContainer")
+
+	log.debug(`Found ${containers.length} containers`)
+
+	containers.forEach(container => {
+		const episodes = container.querySelectorAll("div")
+
+		log.debug(`Found ${episodes.length} episodes`)
+
+		episodes.forEach(episode => {
+			const title = episode.querySelector("h3")?.innerText
+
+			if (title && !subscribedSeries?.includes(title)) {
+				const isHidden = episode.style.display === "none"
+				log.debug(`Hiding episode ${title} (${isHidden ? "hidden" : "visible"})`)
+
+				if (!isHidden) {
+					episode.style.display = "none"
+				} else {
+					episode.style.display = "block"
+				}
+			}
+		})
+	})
+}
+
+
+addGlobalStyle(`
+div#filterToggleContainer {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 0 0;
+}
+`, false)
