@@ -256,9 +256,20 @@ async function addTrailerSearchLink() {
 `
 	const beforeElement = trailerBoxEl.querySelector(`li:nth-child(${trailerBoxEl.childElementCount})`);
 
+	increaseHeaderSize()
+
 	trailerBoxEl.insertBefore( searchTrailerEl, beforeElement )
 
+}
 
+function increaseHeaderSize() {
+	const headerHeight = document.querySelector( "section.title" ).offsetHeight
+
+	addGlobalStyle(`
+	section.title,
+	section.title .backdrop {
+		height: ${ headerHeight + 50 }px;
+	}`, true)
 }
 
 async function addAnimeSearchBox() {
