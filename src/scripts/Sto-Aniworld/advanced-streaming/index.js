@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de			Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.3.7
+// @version      	3.3.8
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -115,31 +115,42 @@ let streamData = null;
 ( async () => {
 
 	if ( enableFilterSeriesCalendar ) filterSeriesCalendar()
+		.then( () => { log.info("enableFilterSeriesCalendar", enableFilterSeriesCalendar) } )
 
 	if ( enableImprovedSearchBox ) improvedSearchBox()
+		.then( () => { log.info("enableFilterSeriesCalendar", enableFilterSeriesCalendar) } )
 
 	streamData = await getStreamData()
 
 	// Features
 
 	if ( enableShortWindowTitle ) shortWindowTitle()
+		.then( () => { log.info("shortWindowTitle", shortWindowTitle) } )
 
-	if ( enableHideSeasonSuggestions ) hideSeasonSuggestions()
+	if ( enableHideSeasonSuggestions ) hideSeasonSuggestions
+		.then( () => { log.info("enableHideSeasonSuggestions", enableHideSeasonSuggestions) } )
 
-	if ( enableCloseMenuOnHoverLeave ) closeMenuOnHoverLeave()
+	if ( enableCloseMenuOnHoverLeave ) closeMenuOnHoverLeave
+		.then( () => { log.info("enableCloseMenuOnHoverLeave", enableCloseMenuOnHoverLeave) } )
 
-	if ( enableAddTrailerSearchLink ) addTrailerSearchLink()
+	if ( enableAddTrailerSearchLink ) addTrailerSearchLink
+		.then( () => { log.info("enableAddTrailerSearchLink", enableAddTrailerSearchLink) } )
 
-	if ( enableAddAnimeSearchBox ) addAnimeSearchBox()
+	if ( enableAddAnimeSearchBox ) addAnimeSearchBox
+		.then( () => { log.info("enableAddAnimeSearchBox", enableAddAnimeSearchBox) } )
 
-	if ( enableAddSeriesSearchBox ) addSeriesSearchBox()
+	if ( enableAddSeriesSearchBox ) addSeriesSearchBox
+		.then( () => { log.info("enableAddSeriesSearchBox", enableAddSeriesSearchBox) } )
 
-	if ( enableEpisodeNavButtons ) addEpisodeNavButtons()
+	if ( enableEpisodeNavButtons ) addEpisodeNavButtons
+		.then( () => { log.info("enableEpisodeNavButtons", enableEpisodeNavButtons) } )
 
 
 	if ( enableAddCalendarSearch ) addCalendarSearch()
+		.then( () => { log.info("enableAddCalendarSearch", enableAddCalendarSearch) } )
 
 	fixAnimeTrailerWatchButton()
+		.then( () => { log.info("fixAnimeTrailerWatchButton") } )
 
 
 	// Styles
@@ -226,7 +237,10 @@ function shortWindowTitle() {
 	let pageTitle = ""
 	if ( streamData.currentSeason > 0 ) pageTitle += "S" + streamData.currentSeason
 	if ( streamData.currentEpisode > 0 ) pageTitle += "E" + streamData.currentEpisode
+
 	window.document.title = `${ ( pageTitle.length > 1 ) ? pageTitle + " - " : "" }${ streamData.title } | ${ streamData.host }`
+	
+	return Promise.resolve()
 }
 
 async function hideSeasonSuggestions() {
