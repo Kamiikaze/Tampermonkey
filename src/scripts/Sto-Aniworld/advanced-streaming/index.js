@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de			Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.3.5
+// @version      	3.3.6
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -326,13 +326,32 @@ function addLinkToList( parent, el ) {
 	parent.insertBefore( el, beforeElement )
 }
 
-function increaseHeaderSize() {
-	const headerHeight = document.querySelector( "section.title" ).offsetHeight
+async function increaseHeaderSize() {
+	/**
+	 * @type {HTMLElement}
+	 */
+	const header = await waitForElm( "section.title" )
+	const headerHeight = header.offsetHeight
+
+	if ( headerHeight === 0) {
+		log.debug("Header is not visible. Waiting for header to be visible")
+		const observer = new MutationObserver( () => {
+			if ( header.offsetHeight > 0 ) {
+				log.info("Header is visible. Increasing Header height")
+				setTimeout( () => {
+					increaseHeaderSize()
+				}, 500 )
+				observer.disconnect()
+			}
+		})
+		observer.observe( header, { attributes: true, attributeFilter: ['style'] } )
+		return
+	}
 
 	addGlobalStyle( `
 	section.title,
 	section.title .backdrop {
-		height: ${ headerHeight + 50 }px;
+		height: ${ headerHeight + 20 }px;
 	}`, true )
 }
 
