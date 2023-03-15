@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de			Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.3.9
+// @version      	3.3.10
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -237,11 +237,17 @@ async function hideSeasonSuggestions() {
 }
 
 async function closeMenuOnHoverLeave() {
-	const menu = await waitForElm( ".dd" )
+	let menu = await waitForElm( ".dd" )
+	menu.replaceWith(menu.cloneNode(true))
+	menu = await waitForElm( ".dd" )
+
 	const modal = await waitForElm( ".modal" )
 
-	menu.addEventListener( 'mouseleave', () => {
+	menu.addEventListener( 'mouseout', () => {
 		modal.style = "display:none"
+	} )
+	menu.addEventListener( 'mouseover', () => {
+		modal.style = "display:block"
 	} )
 }
 
@@ -350,7 +356,7 @@ async function increaseHeaderSize() {
 	addGlobalStyle( `
 	section.title,
 	section.title .backdrop {
-		height: ${ headerHeight + 20 }px;
+		height: ${ headerHeight + 50 }px;
 	}`, true )
 }
 
