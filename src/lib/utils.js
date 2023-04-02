@@ -2,7 +2,7 @@
 // @name        	Kamikaze' Script Utils
 // @namespace    	https://greasyfork.org/users/928242
 // @description  	Custom Functions for Kamikaze's Scripts
-// @version    		1.0.2
+// @version    		1.0.3
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
 // @grant       	none
@@ -88,16 +88,17 @@ function addGlobalStyle(css, important = true) {
 
 /**
  * @param {string} selector - CSS Selector
+ * @param {HTMLElement|Document} parent - Parent Element
  * @description Waits for an element to be present in the DOM
  */
 function waitForElm(selector, parent = document) {
-	return new Promise((resolve, reject) => {
+	return new Promise((resolve) => {
 		if (parent.querySelector(selector)) {
 			log.debug("Element found", selector)
 			return resolve(parent.querySelector(selector));
 		}
 
-		const observer = new MutationObserver(mutations => {
+		const observer = new MutationObserver(() => {
 			if (parent.querySelector(selector)) {
 				log.debug("Element found", selector)
 				resolve(parent.querySelector(selector));
@@ -145,12 +146,14 @@ function checkHasMovies(seasonListEl) {
 
 /**
  * @description Get Stream Details from the Stream Page
- * @returns {Promise<{seasonsCount: number, hasMovies: boolean, episodesCount: number, title: string}>}
+ * @returns {Promise<{seasonsCount: number, hasMovies: boolean, episodesCount: number, episodeTitle: {de: string, en: string}, title: string}>}
  */
 async function getStreamDetails() {
 	const titleEl = await waitForElm( ".series-title > h1 > span" )
 	const seasonListEl = await waitForElm( "#stream > ul:nth-child(1)" )
 	const episodeListEl = await waitForElm( "#stream > ul:nth-child(4)" )
+	const episodeTitleEl = await waitForElm( ".hosterSiteTitle h2" )
+	const [episodeTitleDE, episodeTitleEN] = episodeTitleEl.children
 
 	const hasMovies = checkHasMovies(seasonListEl)
 
@@ -164,6 +167,10 @@ async function getStreamDetails() {
 		title: titleEl.textContent.trim(),
 		seasonsCount: seasonsCount,
 		episodesCount: episodesCount,
+		episodeTitle: {
+			de: episodeTitleDE.textContent.trim(),
+			en: episodeTitleEN.textContent.trim(),
+		},
 		hasMovies: hasMovies,
 	}
 }
@@ -183,6 +190,7 @@ async function getStreamData() {
 		seasonsCount: parseInt(streamDetails.seasonsCount),
 		currentEpisode: parseInt(streamLocation.episode),
 		episodesCount: parseInt(streamDetails.episodesCount),
+		episodeTitle: streamDetails.episodeTitle,
 		hasMovies: streamDetails.hasMovies,
 	}
 
