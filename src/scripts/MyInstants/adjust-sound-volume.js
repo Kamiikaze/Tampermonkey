@@ -1,25 +1,24 @@
 // ==UserScript==
 // @name          	Adjust Instant-Buttons Sound Volume | MyInstants
-// @name:de			    Anpassung der Instant-Button Lautstärke | MyInstants
-// @namespace    	  https://greasyfork.org/users/928242
-// @version        	1.0
+// @name:de			Anpassung der Instant-Button Lautstärke | MyInstants
+// @namespace    	https://greasyfork.org/users/928242
+// @version        	1.1
 // @description   	Adjust Instant-Buttons Sound Volume
 // @description:de	Anpassung der Instant-Button Lautstärke
-// @author       	  Kamikaze (https://github.com/Kamiikaze)
+// @author       	Kamikaze (https://github.com/Kamiikaze)
 // @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
 // @icon            https://www.google.com/s2/favicons?sz=64&domain=myinstants.com
 // @match           https://www.myinstants.com/de/*
-// @grant        	  none
+// @grant        	none
 // @license        	MIT
 // ==/UserScript==
-
 
 
 /* global audio */
 
 const savedVolume = window.localStorage.getItem("soundVol")
 
-setTimeout( () => {
+setTimeout(() => {
 
     const instantsContainer = document.querySelector("#instants_container");
 
@@ -37,7 +36,6 @@ setTimeout( () => {
     audio.volume = savedVolume / 100 || volumeRange.value / 100;
 
 
-
     const volumeNumber = document.createElement("input");
     volumeNumber.type = "number";
     volumeNumber.id = "volume-number";
@@ -45,7 +43,6 @@ setTimeout( () => {
     volumeNumber.max = "100";
     volumeNumber.step = "0.5";
     volumeNumber.value = savedVolume || "50";
-
 
 
     const volumeControlContainer = document.createElement("div");
@@ -58,7 +55,6 @@ setTimeout( () => {
     instantsContainer.before(volumeControlContainer);
 
 
-
     volumeRange.addEventListener("input", () => {
         changeVolume(volumeRange.value);
     });
@@ -68,8 +64,7 @@ setTimeout( () => {
     });
 
     function changeVolume(vol) {
-        const newVolume = vol / 100
-        audio.volume = newVolume;
+        audio.volume = vol / 100;
         volumeNumber.value = vol;
         volumeRange.value = vol;
         window.localStorage.setItem("soundVol", parseFloat(vol).toFixed(1))
