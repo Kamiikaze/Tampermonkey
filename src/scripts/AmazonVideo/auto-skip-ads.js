@@ -8,6 +8,7 @@
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
 // @match        	https://www.amazon.de/gp/video/detail/*
+// @match        	https://www.amazon.*/*/dp/*/ref=sr_*
 // @icon         	https://www.google.com/s2/favicons?sz=64&domain=amazon.de
 // @grant        	none
 // @license      	MIT
