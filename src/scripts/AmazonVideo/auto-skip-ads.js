@@ -2,7 +2,7 @@
 // @name         	Auto Skip ADs, Summary & More | Amazon Video
 // @name:de         Automatisches Überspringen von Werbung, Zusammenfassung & mehr | Amazon Video
 // @namespace   	https://greasyfork.org/users/928242
-// @version     	0.7.1
+// @version     	0.8
 // @description  	Automatically skips ads, recaps, previews and more when watching videos on Amazon Prime.
 // @description:de  Überspringt automatisch Werbung, Zusammenfassungen, Vorschauen und mehr, wenn du Videos auf Amazon Prime ansiehst.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -21,8 +21,6 @@ const skipAdButtonText = 'Überspringen'
 // How often in X seconds to scan for ADs
 const scanInterval = 3
 
-// Start scanning again in X minutes after AD has been skipped
-// const delayScanInterval = 5
 
 
 /* ! ! ! ! ! ! ! !
@@ -51,9 +49,9 @@ async function scanForADs() {
 
 	skipCredits()
 
-	console.log(clp + "skipButtonEl:", skipAdEl)
-
 	if (!skipAdEl) return
+
+	console.log(clp + "skipButtonEl:", skipAdEl)
 
 	console.log(clp + "Detected playing AD. Trying to skip..")
 
@@ -93,13 +91,13 @@ function isVideoPlaying() {
 
 // Finding SkipElement and returning it
 async function getSkipAdElement() {
-	skipAdContainer = document.querySelector("div.atvwebplayersdk-infobar-container > div > div:nth-child(3)")
+	skipAdContainer = document.querySelector("div.atvwebplayersdk-infobar-container > div > div:last-child")
 
 	if (!skipAdContainer) return
 
 	return await [...skipAdContainer.childNodes].find( (el) => {
 
-		if (el.innerText == skipAdButtonText) {
+		if (el.innerText === skipAdButtonText) {
 			console.log(clp + "Found Skip-Button Element", el)
 			console.log(clp + "Skip-Button Text:", el.innerText)
 
@@ -122,9 +120,6 @@ function restartAdScan() {
 	skipAdEl = ''
 	skipButtonEl = ''
 
-	// console.log(clp + `Restarting AdScan in ${delayScanInterval} Minutes.`)
-
-	// setTimeout( () => { startAdScan() }, delayScanInterval * 60 * 1000 )
 	setTimeout( () => { startAdScan() }, 1000 )
 }
 
