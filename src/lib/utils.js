@@ -158,6 +158,7 @@ async function getStreamDetails() {
 	const seasonListEl = await waitForElm( "#stream > ul:nth-child(1)" )
 	const episodeListEl = await waitForElm( "#stream > ul:nth-child(4)" )
 	const episodeTitleEl = await waitForElm( ".hosterSiteTitle h2" )
+	const episodeTitle = getEpisodeTitle()
 
 	const hasMovies = checkHasMovies(seasonListEl)
 
@@ -172,8 +173,8 @@ async function getStreamDetails() {
 		seasonsCount: seasonsCount,
 		episodesCount: episodesCount,
 		episodeTitle: {
-			de: episodeTitleDE.textContent.trim(),
-			en: episodeTitleEN.textContent.trim(),
+			de: episodeTitle.de,
+			en: episodeTitle.en,
 		},
 		hasMovies: hasMovies,
 	}
