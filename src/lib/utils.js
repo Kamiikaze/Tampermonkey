@@ -158,7 +158,6 @@ async function getStreamDetails() {
 	const seasonListEl = await waitForElm( "#stream > ul:nth-child(1)" )
 	const episodeListEl = await waitForElm( "#stream > ul:nth-child(4)" )
 	const episodeTitleEl = await waitForElm( ".hosterSiteTitle h2" )
-	const [episodeTitleDE, episodeTitleEN] = (episodeTitleEl) ? episodeTitleEl.children : []
 
 	const hasMovies = checkHasMovies(seasonListEl)
 
@@ -179,6 +178,23 @@ async function getStreamDetails() {
 		hasMovies: hasMovies,
 	}
 }
+
+/**
+ * @description Parsing title for both languages
+ * @returns {de: string, en: string}
+ */
+function getEpisodeTitle(titleEl) {
+	let titleDE = ""
+	let titleEN = ""
+	if (titelEl) {
+		const [episodeTitleDE, episodeTitleEN] = episodeTitleEl.children
+		titleDE = episodeTitleDE.textContent.trim(),
+		titleEN = episodeTitleEN.textContent.trim(),
+	}
+
+	return { de: titleDE, en: titleEN }
+}
+		
 
 /**
  * @description Return Stream Data from the Stream Page
