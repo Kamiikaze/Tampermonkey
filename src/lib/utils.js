@@ -187,7 +187,7 @@ async function getStreamDetails() {
 function getEpisodeTitle(titleEl) {
 	let titleDE = ""
 	let titleEN = ""
-	if (titelEl) {
+	if (titleEl) {
 		const [episodeTitleDE, episodeTitleEN] = episodeTitleEl.children
 		titleDE = episodeTitleDE.textContent.trim()
 		titleEN = episodeTitleEN.textContent.trim()
