@@ -189,8 +189,8 @@ function getEpisodeTitle(titleEl) {
 	let titleEN = ""
 	if (titelEl) {
 		const [episodeTitleDE, episodeTitleEN] = episodeTitleEl.children
-		titleDE = episodeTitleDE.textContent.trim(),
-		titleEN = episodeTitleEN.textContent.trim(),
+		titleDE = episodeTitleDE.textContent.trim()
+		titleEN = episodeTitleEN.textContent.trim()
 	}
 
 	return { de: titleDE, en: titleEN }
