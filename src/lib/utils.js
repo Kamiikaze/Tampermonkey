@@ -110,6 +110,11 @@ function waitForElm(selector, parent = document) {
 			childList: true,
 			subtree: true
 		});
+
+	        setTimeout( () => {
+	            console.error("Element not found")
+	            return resolve(null)
+	        }, 3000)
 	});
 }
 
