@@ -158,7 +158,7 @@ async function getStreamDetails() {
 	const seasonListEl = await waitForElm( "#stream > ul:nth-child(1)" )
 	const episodeListEl = await waitForElm( "#stream > ul:nth-child(4)" )
 	const episodeTitleEl = await waitForElm( ".hosterSiteTitle h2" )
-	const [episodeTitleDE, episodeTitleEN] = episodeTitleEl.children
+	const [episodeTitleDE, episodeTitleEN] = episodeTitleEl.children || []
 
 	const hasMovies = checkHasMovies(seasonListEl)
 
