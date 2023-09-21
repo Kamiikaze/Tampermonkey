@@ -112,9 +112,9 @@ function waitForElm(selector, parent = document) {
 		});
 
 	        setTimeout( () => {
-	            console.error("Element not found")
+	            console.error("Element not found", selector)
 	            return resolve(null)
-	        }, 3000)
+	        }, 1000)
 	});
 }
 
