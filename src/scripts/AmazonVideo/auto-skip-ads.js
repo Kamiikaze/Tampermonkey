@@ -2,7 +2,7 @@
 // @name         	Auto Skip ADs, Summary & More | Amazon Video
 // @name:de         Automatisches Überspringen von Werbung, Zusammenfassung & mehr | Amazon Video
 // @namespace   	https://greasyfork.org/users/928242
-// @version     	0.8
+// @version     	0.9
 // @description  	Automatically skips ads, recaps, previews and more when watching videos on Amazon Prime.
 // @description:de  Überspringt automatisch Werbung, Zusammenfassungen, Vorschauen und mehr, wenn du Videos auf Amazon Prime ansiehst.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -31,6 +31,8 @@ Dont change below!
 
 
 let checkForAds = ''
+let isAutoplay = true
+let doOnce = true
 let skipAdContainer = ''
 let skipAdEl = ''
 let skipButtonEl = ''
@@ -42,6 +44,10 @@ startAdScan()
 async function scanForADs() {
 
 	if (!isVideoPlaying()) return;
+
+    	await checkForAutoplay()
+	
+    	if (isAutoplay) return
 
 	console.log(clp + "Scanning for running AD..")
 
@@ -56,6 +62,25 @@ async function scanForADs() {
 	console.log(clp + "Detected playing AD. Trying to skip..")
 
 	skipAd()
+}
+
+// Starting Video on a given time, when it has a time-param
+async function checkForAutoplay() {
+    if (!doOnce) return
+
+    const url = document.querySelector('.fbl-play-btn').href
+    const urlParams = await new URLSearchParams(url);
+    const paramT = await urlParams.get('t');
+    console.log("paramT", paramT)
+
+    if (paramT > 0) {
+        console.log(clp + "Autoplay detected. Delaying scan.")
+        setTimeout(() => (isAutoplay = false), 5000)
+    } else {
+        isAutoplay = false
+    }
+    doOnce = false
+    return
 }
 
 // Skipping the AD and restart delayed Scanning
