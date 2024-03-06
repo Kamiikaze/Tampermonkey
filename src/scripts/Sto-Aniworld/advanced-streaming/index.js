@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         	Advanced Streaming | aniworld.to & s.to
-// @name:de			Erweitertes Streaming | aniworld.to & s.to
+// @name:de		Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.3.10
+// @version      	3.3.11
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
-// @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
+// @supportURL     	https://github.com/Kamiikaze/Tampermonkey/issues
 // @iconURL      	https://s.to/favicon.ico
 // @match        	https://s.to/serie/stream/*
 // @match      		https://s.to/serienkalender*
@@ -16,7 +16,7 @@
 // @match      		https://aniworld.to/animekalender*
 // @match      		https://aniworld.to/animes*
 // @match        	https://aniworld.to/account/subscribed
-// @require         https://greasyfork.org/scripts/455253-kamikaze-script-utils/code/Kamikaze'%20Script%20Utils.js
+// @require         	https://greasyfork.org/scripts/455253-kamikaze-script-utils/code/Kamikaze'%20Script%20Utils.js
 // @grant        	none
 // @license      	MIT
 // ==/UserScript==
@@ -616,11 +616,11 @@ async function getSubscribedSeries() {
 
 		log.info( `Saved ${ titles.length } subscribed series.` )
 
-		alert( `Saved ${ titles.length } subscribed series.` )
+		//alert( `Saved ${ titles.length } subscribed series.` )
 
 	} else {
 		log.warn( "No subscribed series found." )
-		alert( "No subscribed series found." )
+		//alert( "No subscribed series found." )
 	}
 
 	return titles
