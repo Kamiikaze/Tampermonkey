@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name         GrandRP - Beschwerde Generator
 // @namespace    https://greasyfork.org/users/928242
-// @version      0.2.2
+// @version      0.2.3
 // @description  Genriert das Template entsprechend der Vorlage
 // @author       Kamikaze (https://github.com/Kamiikaze)
 // @supportURL   https://github.com/Kamiikaze/Tampermonkey/issues
+// @match        https://gta5grand.com/forum/*
 // @match        https://gta5grand.com/forum/forums/*/post-thread
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=gta5grand.com
 // @license      MIT
@@ -13,6 +14,8 @@
 // ==/UserScript==
 
 (function() {
+    if (window.location.pathname.split("/").slice(-1)[0] !== 'post-thread') return;
+
     const formButtonRow = document.querySelector(".formRow .formSubmitRow-controls")
 
     const generateButtonEl = document.createElement('button');
