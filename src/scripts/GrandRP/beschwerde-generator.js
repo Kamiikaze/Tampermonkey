@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         GrandRP - Beschwerde Generator
 // @namespace    https://greasyfork.org/users/928242
-// @version      0.2
-// @description  try to take over the world!
+// @version      0.2.1
+// @description  Genriert das Template entsprechend der Vorlage
 // @author       Kamikaze (https://github.com/Kamiikaze)
 // @supportURL   https://github.com/Kamiikaze/Tampermonkey/issues
 // @match        https://gta5grand.com/forum/forums/*/post-thread
