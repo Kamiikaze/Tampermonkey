@@ -1,16 +1,16 @@
 // ==UserScript==
-// @name         GrandRP - Beschwerde Generator
-// @namespace    https://greasyfork.org/users/928242
-// @version      0.2.3
-// @description  Genriert das Template entsprechend der Vorlage
-// @author       Kamikaze (https://github.com/Kamiikaze)
-// @supportURL   https://github.com/Kamiikaze/Tampermonkey/issues
-// @match        https://gta5grand.com/forum/*
-// @match        https://gta5grand.com/forum/forums/*/post-thread
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=gta5grand.com
-// @license      MIT
-// @downloadURL  https://update.greasyfork.org/scripts/495084/GrandRP%20-%20Beschwerde%20Generator.user.js
-// @updateURL    https://update.greasyfork.org/scripts/495084/GrandRP%20-%20Beschwerde%20Generator.meta.js
+// @name          GrandRP - Beschwerde Generator
+// @namespace     https://greasyfork.org/users/928242
+// @version       0.2.4
+// @description   Genriert das Template entsprechend der Vorlage
+// @author        Kamikaze (https://github.com/Kamiikaze)
+// @supportURL    https://github.com/Kamiikaze/Tampermonkey/issues
+// @match         https://gta5grand.com/forum/*
+// @match         https://gta5grand.com/forum/forums/*/post-thread
+// @icon          https://www.google.com/s2/favicons?sz=64&domain=gta5grand.com
+// @license       MIT
+// @downloadURL   https://update.greasyfork.org/scripts/495084/GrandRP%20-%20Beschwerde%20Generator.user.js
+// @updateURL     https://update.greasyfork.org/scripts/495084/GrandRP%20-%20Beschwerde%20Generator.meta.js
 // ==/UserScript==
 
 (function() {
@@ -35,6 +35,7 @@
 
     const fields = loadDefaultFields()
     console.log("Loaded Fields:", fields)
+    if (!fields) return;
     document.querySelector(".input.field_YourID").value = fields.myId
     document.querySelector(".input.field_PlayerReportID").value = fields.myName
 })();
