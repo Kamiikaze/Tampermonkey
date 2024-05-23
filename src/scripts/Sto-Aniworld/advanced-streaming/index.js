@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de         Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.6.2
+// @version      	3.6.3
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -460,6 +460,7 @@ function generateStyles() {
 }
 
 function shortWindowTitle() {
+    if (!streamData.title) return
     let pageTitle = ""
     if (streamData.currentSeason > 0) pageTitle += "S" + streamData.currentSeason
     if (streamData.currentEpisode > 0) pageTitle += "E" + streamData.currentEpisode
@@ -544,6 +545,7 @@ async function addCalendarSearch() {
 async function fixAnimeTrailerWatchButton() {
     const seriesTitle = streamData.title
     const watchButton = await waitForElm(".trailerButton")
+    if (!watchButton) return
     watchButton.style.display = "none"
 
     if (!watchButton) return
@@ -564,6 +566,7 @@ async function fixAnimeTrailerWatchButton() {
 }
 
 function addLinkToList(parent, el) {
+    if (!parent) return
     const beforeElement = parent.querySelector(`li:nth-child(${parent.childElementCount})`);
 
     parent.insertBefore(el, beforeElement)
@@ -574,6 +577,7 @@ async function increaseHeaderSize() {
      * @type {HTMLElement}
      */
     const header = await waitForElm("section.title")
+    if (!header) return
     const headerHeight = header.offsetHeight
 
     if (headerHeight === 0) {
@@ -599,6 +603,8 @@ async function addAnimeSearchBox() {
     searchBoxEl.classList.add('anime-search')
     const searchBoxTitel = document.createElement('p')
     searchBoxTitel.innerText = "Anime suchen auf:"
+
+    if (!rightColEl) return
 
     rightColEl.append(searchBoxEl)
     searchBoxEl.append(searchBoxTitel)
