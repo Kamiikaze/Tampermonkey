@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de         Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.5.1
+// @version      	3.5.2
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -17,7 +17,7 @@
 // @match      		https://aniworld.to/animes*
 // @match        	https://aniworld.to/account/subscribed
 // @require         https://greasyfork.org/scripts/455253-kamikaze-script-utils/code/Kamikaze'%20Script%20Utils.js
-// @require         https://cdn.jsdelivr.net/npm/toastify-js
+// @require         https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js
 // @resource        toastifyCss https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css
 // @license      	MIT
 // @grant           GM_getResourceText
