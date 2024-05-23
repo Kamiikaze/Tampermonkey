@@ -2,7 +2,7 @@
 // @name        	Kamikaze' Script Utils
 // @namespace    	https://greasyfork.org/users/928242
 // @description  	Custom Functions for Kamikaze's Scripts
-// @version    		1.1.6
+// @version    		1.1.7
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
 // ==/UserScript==
@@ -214,7 +214,7 @@ function getEpisodeTitle(episodeTitleEl) {
     if (episodeTitleEl) {
         const [episodeTitleDE, episodeTitleEN] = episodeTitleEl.children
         titleDE = episodeTitleDE.textContent.trim()
-        titleEN = episodeTitleEN.textContent.trim() || ""
+        titleEN = episodeTitleEN?.textContent.trim() || ""
     }
 
     return {de: titleDE, en: titleEN}
