@@ -2,7 +2,7 @@
 // @name        	Kamikaze' Script Utils
 // @namespace    	https://greasyfork.org/users/928242
 // @description  	Custom Functions for Kamikaze's Scripts
-// @version    		1.1.2
+// @version    		1.1.3
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
 // ==/UserScript==
@@ -71,7 +71,6 @@ class Logger {
     }
 
 }
-
 
 /**
  * @param {string} text - Notification Text
@@ -221,7 +220,6 @@ function getEpisodeTitle(episodeTitleEl) {
     return {de: titleDE, en: titleEN}
 }
 
-
 /**
  * @description Return Stream Data from the Stream Page
  * @returns {Promise<{seasonsCount: number, currentSeason: number, host: string, hasMovies: boolean, episodesCount: number, title: string, currentEpisode: number}>}
@@ -246,3 +244,12 @@ async function getStreamData() {
     return data
 }
 
+
+addGlobalStyle(`
+    .toastify {
+        background-color: #243743;
+        border: 2px solid #637cf9;
+        border-radius: 50px;
+        box-shadow: 0px 0px 20px 0px #0f1620;
+    }
+`, false)
