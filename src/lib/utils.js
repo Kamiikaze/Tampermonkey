@@ -6,7 +6,6 @@
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
 // @match           *://*
-// @require         https://cdn.jsdelivr.net/npm/toastify-js
 // @resource        customCSS https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css
 // @grant           GM_getResourceText
 // @grant           GM_addStyle
