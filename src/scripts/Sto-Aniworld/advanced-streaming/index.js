@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de         Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.5.4
+// @version      	3.6.0
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -12,10 +12,12 @@
 // @match      		https://s.to/serienkalender*
 // @match      		https://s.to/serien*
 // @match        	https://s.to/account/subscribed
+// @match        	https://s.to/account/watchlist*
 // @match        	https://aniworld.to/anime/stream/*
 // @match      		https://aniworld.to/animekalender*
 // @match      		https://aniworld.to/animes*
 // @match        	https://aniworld.to/account/subscribed
+// @match        	https://aniworld.to/account/watchlist*
 // @require         https://greasyfork.org/scripts/455253-kamikaze-script-utils/code/Kamikaze'%20Script%20Utils.js
 // @require         https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js
 // @resource        toastifyCss https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css
@@ -130,6 +132,7 @@ let streamDetails = null;
 
     await getSubscribedSeries()
     hideSeen()
+    sortWatchlist()
 
     if (enableFilterSeriesCalendar) filterSeriesCalendar()
 
@@ -305,6 +308,34 @@ async function addNotesBox() {
     })
 
 
+}
+
+async function sortWatchlist() {
+
+    if (!window.location.pathname.includes("watchlist")) return
+    console.log("watchlist")
+
+    const sortOrder = window.location.pathname.split("/")[3]
+    if (!sortOrder) return
+    console.log("sortOrder", sortOrder)
+
+    // Select the container
+    const container = await waitForElm('.seriesListContainer');
+
+    // Convert HTMLCollection to an array
+    const elementArray = Array.from(container.children);
+
+    // Sort the array based on the text content of the h3 elements
+    elementArray.sort((a, b) => {
+        const titleA = a.querySelector('h3').textContent.trim();
+        const titleB = b.querySelector('h3').textContent.trim();
+
+        if (sortOrder === "asc") return titleA.localeCompare(titleB);
+        return titleB.localeCompare(titleA);
+    });
+
+    // Re-append the sorted elements to the container
+    elementArray.forEach(element => container.appendChild(element));
 }
 
 function generateStyles() {
