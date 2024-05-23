@@ -5,10 +5,15 @@
 // @version    		1.0.4
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
-// @grant       	none
+// @require         https://cdn.jsdelivr.net/npm/toastify-js
+// @resource        customCSS https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css
+// @grant           GM_getResourceText
+// @grant           GM_addStyle
 // ==/UserScript==
 
 /* jshint esversion: 11 */
+
+/* global Toastify */
 
 
 /**
@@ -70,6 +75,30 @@ class Logger {
         if (this.logLevel > 0) console.error(this.formattedOutput(...args), this.prefixStyle, this.resetStyle)
     }
 
+}
+
+
+/**
+ * @param {string} text - Notification Text
+ * @param {number} [duration=5000] - Duration for which the toast should be displayed.
+ * -1 for permanent toast
+ * @param {string} [type="default"] - Classname for Notification type
+ * @description Sending Toast Notification
+ */
+function notify(text, duration = 5000, type = "default") {
+    Toastify({
+        text: text,
+        duration: duration,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "right", // `left`, `center` or `right`
+        offset: {
+            x: 0, // horizontal axis - can be a number or a string indicating unity. eg: '2em'
+            y: 70 // vertical axis - can be a number or a string indicating unity. eg: '2em'
+        },
+        className: type,
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+    }).showToast();
 }
 
 /**
