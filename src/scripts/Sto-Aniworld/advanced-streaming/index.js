@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de         Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.6.1
+// @version      	3.6.2
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -11,11 +11,13 @@
 // @match        	https://s.to/serie/stream/*
 // @match      		https://s.to/serienkalender*
 // @match      		https://s.to/serien*
+// @match      		https://s.to/genre*
 // @match        	https://s.to/account/subscribed
 // @match        	https://s.to/account/watchlist*
 // @match        	https://aniworld.to/anime/stream/*
 // @match      		https://aniworld.to/animekalender*
 // @match      		https://aniworld.to/animes*
+// @match      		https://aniworld.to/genre*
 // @match        	https://aniworld.to/account/subscribed
 // @match        	https://aniworld.to/account/watchlist*
 // @require         https://greasyfork.org/scripts/455253-kamikaze-script-utils/code/Kamikaze'%20Script%20Utils.js
@@ -139,7 +141,7 @@ let streamDetails = null;
     if (enableImprovedSearchBox) improvedSearchBox()
 
     streamData = await getStreamData()
-    streamDetails = await getStreamDetails()
+    // streamDetails = await getStreamDetails()
 
     await toggleSubscribedSeries()
 
