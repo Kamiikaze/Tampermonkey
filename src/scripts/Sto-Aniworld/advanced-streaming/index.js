@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de         Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.5.3
+// @version      	3.5.4
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -56,6 +56,7 @@ const animeSearchProviderList = {
     'Crunchyroll': false,
     'aniSearch': false,
     'AnimePlanet': false,
+    'Kitsu': true,
     'MyAnimeList': true,
     'Amazon Video': true,
 }
@@ -556,7 +557,6 @@ async function addAnimeSearchBox() {
     const searchBoxTitel = document.createElement('p')
     searchBoxTitel.innerText = "Anime suchen auf:"
 
-
     rightColEl.append(searchBoxEl)
     searchBoxEl.append(searchBoxTitel)
 
@@ -575,6 +575,11 @@ async function addAnimeSearchBox() {
             domain: "anime-planet.com",
             searchUrl: "https://www.anime-planet.com/anime/all?name=#TITEL#",
             name: "AnimePlanet"
+        },
+        {
+            domain: "kitsu.io",
+            searchUrl: "https://kitsu.io/anime?text=#TITEL#",
+            name: "Kitsu"
         },
         {
             domain: "myanimelist.net",
@@ -612,13 +617,20 @@ async function addSeriesSearchBox() {
     const searchBoxTitel = document.createElement('p')
     searchBoxTitel.innerText = "Serie suchen auf:"
 
-
     rightColEl.append(searchBoxEl)
     searchBoxEl.append(searchBoxTitel)
 
     const sites = [
-        {domain: "amazon.de", searchUrl: "https://www.amazon.de/s?k=#TITEL#&i=instant-video", name: "Amazon Video"},
-        {domain: "netflix.com", searchUrl: "https://www.netflix.com/search?q=#TITEL#", name: "Netflix"},
+        {
+            domain: "amazon.de",
+            searchUrl: "https://www.amazon.de/s?k=#TITEL#&i=instant-video",
+            name: "Amazon Video"
+        },
+        {
+            domain: "netflix.com",
+            searchUrl: "https://www.netflix.com/search?q=#TITEL#",
+            name: "Netflix"
+        }
     ]
 
     for (let i = 0; i < sites.length; i++) {
