@@ -2,7 +2,7 @@
 // @name        	Kamikaze' Script Utils
 // @namespace    	https://greasyfork.org/users/928242
 // @description  	Custom Functions for Kamikaze's Scripts
-// @version    		1.1.7
+// @version    		1.1.8
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
 // ==/UserScript==
@@ -186,8 +186,8 @@ async function getStreamDetails() {
 
     const hasMovies = checkHasMovies(seasonListEl)
 
-    const seasonsCount = seasonListEl.childElementCount - 1 - (hasMovies ? 1 : 0)
-    const episodesCount = episodeListEl.childElementCount - 1
+    const seasonsCount = seasonListEl?.childElementCount - 1 - (hasMovies ? 1 : 0) || 0
+    const episodesCount = episodeListEl?.childElementCount - 1 || 0
 
     log.debug("Elements", titleEl, seasonListEl, episodeListEl)
     log.debug("Count", seasonsCount, episodesCount)
