@@ -2,7 +2,7 @@
 // @name        	Kamikaze' Script Utils
 // @namespace    	https://greasyfork.org/users/928242
 // @description  	Custom Functions for Kamikaze's Scripts
-// @version    		1.1.8
+// @version    		1.1.9
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
 // ==/UserScript==
@@ -193,7 +193,7 @@ async function getStreamDetails() {
     log.debug("Count", seasonsCount, episodesCount)
 
     return {
-        title: titleEl.textContent.trim(),
+        title: titleEl?.textContent.trim() || "",
         seasonsCount: seasonsCount,
         episodesCount: episodesCount,
         episodeTitle: {
