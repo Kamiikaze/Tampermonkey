@@ -183,12 +183,12 @@ async function getStreamDetails() {
 
 /**
  * @description Parsing title for both languages
- * @returns {de: string, en: string}
+ * @returns {{de: string, en: string}}
  */
-function getEpisodeTitle(titleEl) {
+function getEpisodeTitle(episodeTitleEl) {
     let titleDE = ""
     let titleEN = ""
-    if (titleEl) {
+    if (episodeTitleEl) {
         const [episodeTitleDE, episodeTitleEN] = episodeTitleEl.children
         titleDE = episodeTitleDE.textContent.trim()
         titleEN = episodeTitleEN.textContent.trim()
