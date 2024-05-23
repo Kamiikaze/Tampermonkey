@@ -2,14 +2,10 @@
 // @name        	Kamikaze' Script Utils
 // @namespace    	https://greasyfork.org/users/928242
 // @description  	Custom Functions for Kamikaze's Scripts
-// @version    		1.0.4
+// @version    		1.1.0
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
-// @match           *://*
-// @require         https://cdn.jsdelivr.net/npm/toastify-js
-// @resource        customCSS https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css
-// @grant           GM_getResourceText
-// @grant           GM_addStyle
+// @grant           none
 // ==/UserScript==
 
 /* jshint esversion: 11 */
