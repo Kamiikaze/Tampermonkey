@@ -2,7 +2,7 @@
 // @name        	Kamikaze' Script Utils
 // @namespace    	https://greasyfork.org/users/928242
 // @description  	Custom Functions for Kamikaze's Scripts
-// @version    		1.1.4
+// @version    		1.1.5
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
 // ==/UserScript==
@@ -247,14 +247,14 @@ async function getStreamData() {
 
 addGlobalStyle(`
     .toastify {
-        background-color: #243743;
+        background: #243743;
         border: 2px solid #637cf9;
         border-radius: 50px;
         box-shadow: 0px 0px 20px 0px #0f1620;
     }
     
     .toastify.error {
-        background-color: #9c0000;
+        background: #9c0000;
         border: 2px solid #f96363;
     }
     
