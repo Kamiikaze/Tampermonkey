@@ -2,16 +2,21 @@
 // @name        	Kamikaze' Script Utils
 // @namespace    	https://greasyfork.org/users/928242
 // @description  	Custom Functions for Kamikaze's Scripts
-// @version    		1.1.0
+// @version    		1.1.1
 // @author       	Kamikaze (https://github.com/Kamiikaze)
+// @resource        toastifyCss https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css
 // @license     	MIT
-// @grant           none
+// @grant           GM_getResourceText
+// @grant           GM_addStyle
 // ==/UserScript==
 
 /* jshint esversion: 11 */
 
-/* global Toastify */
+/* global Toastify GM_getResourceText */
 
+// Load Toastify CSS
+const toastifyCss = GM_getResourceText("toastifyCss");
+GM_addStyle(toastifyCss);
 
 /**
  * @description Custom Logger
