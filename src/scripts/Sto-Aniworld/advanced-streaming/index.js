@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de			Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.4.0
+// @version      	3.5.0
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -17,10 +17,14 @@
 // @match      		https://aniworld.to/animes*
 // @match        	https://aniworld.to/account/subscribed
 // @require         https://greasyfork.org/scripts/455253-kamikaze-script-utils/code/Kamikaze'%20Script%20Utils.js
-// @grant        	none
+// @require         https://cdn.jsdelivr.net/npm/toastify-js
+// @resource        toastifyCss https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css
 // @license      	MIT
+// @grant           GM_getResourceText
+// @grant           GM_addStyle
 // ==/UserScript==
 
+// Load Toastify CSS
 
 // # # # # # #
 // CONFIG
@@ -51,7 +55,7 @@ const animeSearchProviderList = {
     'aniSearch': false,
     'AnimePlanet': false,
     'MyAnimeList': true,
-    'AmazonVideo': true,
+    'Amazon Video': true,
 }
 
 // Adding a small box at bottom left to search the Series on sites like Amazon, Netflix & more
@@ -111,7 +115,7 @@ const useScrollbarForEpisodeList = true
 
 /*** DO NOT CHANGE BELOW ***/
 
-/* global Logger getStreamData waitForElm addGlobalStyle searchSeries */
+/* global Logger getStreamData waitForElm addGlobalStyle searchSeries GM_getResourceText */
 
 const log = new Logger("Advanced Streaming");
 let streamData = null;
@@ -285,6 +289,8 @@ async function addNotesBox() {
             saveBtn.innerHTML = "Save Notes"
             saveBtn.style.backgroundColor = ""
         }, 2000)
+
+        notify("Notes saved")
     })
 
     const toggleBtn = document.getElementById("notes-toggle")
@@ -299,6 +305,10 @@ async function addNotesBox() {
 }
 
 function generateStyles() {
+
+    const toastifyCss = GM_getResourceText("toastifyCss");
+    GM_addStyle(toastifyCss);
+
     if (reducePlayerHeight > 0) {
         addGlobalStyle(`
             .inSiteWebStream, .inSiteWebStream iframe {height: ${reducePlayerHeight}px; }
@@ -532,7 +542,6 @@ async function increaseHeaderSize() {
             }
         })
         observer.observe(header, {attributes: true, attributeFilter: ['style']})
-        return
     }
 }
 
@@ -699,12 +708,12 @@ function nextEpisode(currSeason, currEpisode, maxSeasons, maxEpisodes) {
         }
         if (nextSeason > maxSeasons) {
             nextEpisode = false
-            alert('Last Episode and Last Season')
+            notify('Last Episode of Last Season', undefined, "error")
         }
     }
 
     if (!nextEpisode) {
-        alert('Episode not found')
+        notify('Episode not found', undefined, "error")
         return
     }
 
@@ -822,12 +831,11 @@ async function getSubscribedSeries() {
 
         log.info(`Saved ${titles.length} subscribed series.`)
 
-        //alert( `Saved ${ titles.length } subscribed series.` )
+        notify(`Saved ${titles.length} subscribed series.`)
 
     } else {
         log.warn("No subscribed series found.")
-        //TODO: Add Notify Box
-        //alert( "No subscribed series found." )
+        notify("No subscribed series found.", undefined, "error")
     }
 
     return titles
