@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de         Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.6.0
+// @version      	3.6.1
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -315,9 +315,19 @@ async function sortWatchlist() {
     if (!window.location.pathname.includes("watchlist")) return
     console.log("watchlist")
 
+    const nav = await waitForElm(".seriesListNavigation")
+    const sortByGenre = document.createElement("a")
+    sortByGenre.href = "/account/watchlist/genre"
+    sortByGenre.innerText = "Genre"
+
+    nav.append(" oder ")
+    nav.append(sortByGenre)
+
     const sortOrder = window.location.pathname.split("/")[3]
     if (!sortOrder) return
     console.log("sortOrder", sortOrder)
+
+    const sortTag = (sortOrder === "genre") ? "small" : "h3"
 
     // Select the container
     const container = await waitForElm('.seriesListContainer');
@@ -327,10 +337,10 @@ async function sortWatchlist() {
 
     // Sort the array based on the text content of the h3 elements
     elementArray.sort((a, b) => {
-        const titleA = a.querySelector('h3').textContent.trim();
-        const titleB = b.querySelector('h3').textContent.trim();
+        const titleA = a.querySelector(sortTag).textContent.trim();
+        const titleB = b.querySelector(sortTag).textContent.trim();
 
-        if (sortOrder === "asc") return titleA.localeCompare(titleB);
+        if (sortOrder === "asc" || sortOrder === "genre") return titleA.localeCompare(titleB);
         return titleB.localeCompare(titleA);
     });
 
