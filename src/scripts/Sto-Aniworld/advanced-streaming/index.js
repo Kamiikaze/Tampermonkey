@@ -2,7 +2,7 @@
 // @name         	Advanced Streaming | aniworld.to & s.to
 // @name:de         Erweitertes Streaming | aniworld.to & s.to
 // @namespace    	https://greasyfork.org/users/928242
-// @version      	3.6.3
+// @version      	3.6.4
 // @description  	Minimizing page elements to fit smaller screens and adding some usability improvements.
 // @description:de 	Minimierung der Seitenelemente zur Anpassung an kleinere Bildschirme und Verbesserung der Benutzerfreundlichkeit.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -963,7 +963,7 @@ div#filterToggleContainer {
 
 async function improvedSearchBox() {
 
-    if (!window.location.pathname.includes("animes") || !window.location.pathname.includes("serien")) return
+    if (!window.location.pathname.includes("animes") && !window.location.pathname.includes("serien") && !window.location.pathname.includes("kalender")) return
 
     let doNewSearch = false
 
