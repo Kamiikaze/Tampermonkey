@@ -2,7 +2,7 @@
 // @name        	Kamikaze' Script Utils
 // @namespace    	https://greasyfork.org/users/928242
 // @description  	Custom Functions for Kamikaze's Scripts
-// @version    		1.1.9
+// @version    		1.1.10
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
 // ==/UserScript==
@@ -113,6 +113,7 @@ function addGlobalStyle(css, important = true) {
  * @param {string} selector - CSS Selector
  * @param {HTMLElement|Document} parent - Parent Element
  * @description Waits for an element to be present in the DOM
+ * @returns {Element | null}
  */
 function waitForElm(selector, parent = document) {
     return new Promise((resolve) => {
