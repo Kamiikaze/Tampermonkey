@@ -1,12 +1,16 @@
 // ==UserScript==
-// @name         Inara - Commodites Total Price
-// @namespace    http://tampermonkey.net/
-// @version      1.0.1
-// @description  try to take over the world!
-// @author       You
-// @match        https://inara.cz/elite/commodities/?formbrief=*
-// @icon         https://www.google.com/s2/favicons?sz=64&domain=inara.cz
-// @grant        none
+// @name            Inara - Commodites Total Price
+// @name:de         Inara - Waren Gesamt Preis
+// @namespace       https://greasyfork.org/users/928242
+// @version         1.0.1
+// @description  	Adds a filter to enter buy/sell amount and an additional column with the total price.
+// @description:de	Fügt einen Filter zur Eingabe des Kauf-/Verkaufsbetrags und eine zusätzliche Spalte mit dem Gesamtpreis hinzu.
+// @author       	Kamikaze (https://github.com/Kamiikaze)
+// @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
+// @match           https://inara.cz/elite/commodities/?formbrief=*
+// @icon            https://www.google.com/s2/favicons?sz=64&domain=inara.cz
+// @grant           none
+// @license      	MIT
 // ==/UserScript==
 
 // # # # # # #
@@ -127,7 +131,7 @@ function updateTotalPrices() {
 
             // Gesamtpreis berechnen
             const totalPrice = (numericPrice * desiredQuantity).toFixed();
-            
+
             const formattedTotal = thousandSep ?
                 formatWithThousandSeparator(totalPrice, thousandSep) + ' Cr' :
                 totalPrice + ' Cr';
