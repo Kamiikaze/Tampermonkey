@@ -1,16 +1,12 @@
 // ==UserScript==
-// @name            Inara - Commodites Total Price
-// @name:de         Inara - Waren Gesamt Preis
-// @namespace       https://greasyfork.org/users/928242
-// @version         1.0.0
-// @description  	Adds a filter to enter buy/sell amount and an additional column with the total price.
-// @description:de	Fügt einen Filter zur Eingabe des Kauf-/Verkaufsbetrags und eine zusätzliche Spalte mit dem Gesamtpreis hinzu.
-// @author       	Kamikaze (https://github.com/Kamiikaze)
-// @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
-// @match           https://inara.cz/elite/commodities/?formbrief=*
-// @icon            https://www.google.com/s2/favicons?sz=64&domain=inara.cz
-// @grant           none
-// @license      	MIT
+// @name         Inara - Commodites Total Price
+// @namespace    http://tampermonkey.net/
+// @version      1.0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://inara.cz/elite/commodities/?formbrief=*
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=inara.cz
+// @grant        none
 // ==/UserScript==
 
 // # # # # # #
@@ -95,6 +91,11 @@ function updateTotalPrices() {
             .replace(/\B(?=(\d{3})+(?!\d))/g, thousandSeparator);
     }
 
+    // Function to calculate average of two numbers
+    function calculateAverage(min, max) {
+        return (min + max) / 2;
+    }
+
     // Alle Zeilen im Tabellenkörper durchgehen
     const rows = table.querySelectorAll('tbody tr');
     rows.forEach(row => {
@@ -104,21 +105,35 @@ function updateTotalPrices() {
 
         if (unitPriceCell) {
             // Preis extrahieren (nur Ziffern, Komma und Punkt)
-            const rawPrice = unitPriceCell.textContent.replace(/[^\d.,]/g, '')
-                .trim();
+            const rawPrice = unitPriceCell.textContent.replace(/[^\d.,\s-]/g, '').trim()
             const rawSupply = supplyCell.getAttribute('data-order')
             const thousandSep = detectThousandSeparator(rawPrice);
 
-            // Tausender-Trennzeichen entfernen, um einen numerischen Wert zu erhalten
-            const numericString = thousandSep ? rawPrice.split(thousandSep)
-                .join('') : rawPrice;
-            const numericPrice = parseInt(numericString, 10);
+            let numericPrice;
+            let isApproximate = false;
+
+            // Check if the price is a range
+            if (rawPrice.includes('-')) {
+                const [minPrice, maxPrice] = rawPrice.split('-').map(price => {
+                    const numericString = thousandSep ? price.split(thousandSep).join('') : price;
+                    return parseInt(numericString, 10);
+                });
+                numericPrice = calculateAverage(minPrice, maxPrice);
+                isApproximate = true;
+            } else {
+                const numericString = thousandSep ? rawPrice.split(thousandSep).join('') : rawPrice;
+                numericPrice = parseInt(numericString, 10);
+            }
 
             // Gesamtpreis berechnen
-            const totalPrice = numericPrice * desiredQuantity;
+            const totalPrice = (numericPrice * desiredQuantity).toFixed();
+            
             const formattedTotal = thousandSep ?
                 formatWithThousandSeparator(totalPrice, thousandSep) + ' Cr' :
                 totalPrice + ' Cr';
+
+            // Append "~" if the price was a range
+            const displayTotal = isApproximate ? `~${formattedTotal}` : formattedTotal;
 
             // Check if desiredQuantity > rawSupply
             let lowSupplyClass = ""
@@ -133,7 +148,7 @@ function updateTotalPrices() {
                 totalPriceCell.className = 'alignright total-price';
                 row.insertBefore(totalPriceCell, row.querySelector('td:nth-child(7)'));
             }
-            totalPriceCell.textContent = formattedTotal;
+            totalPriceCell.textContent = displayTotal;
             supplyCell.className = 'alignright' + lowSupplyClass;
         }
     });
