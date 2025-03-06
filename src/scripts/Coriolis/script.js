@@ -2,7 +2,7 @@
 // @name            Coriolis - Save export to file
 // @name:de         Coriolis - Export in Datei speichern
 // @namespace       https://greasyfork.org/users/928242
-// @version         1.0.0
+// @version         1.0.1
 // @description  	Add a button on coriolis backup / detailed-export, to save the output as file.
 // @description:de	Füge einen Button zu "Coriolis Backup / Detailed-Export" hinzu, um die Ausgabe als Datei zu speichern.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -11,6 +11,8 @@
 // @icon            https://www.google.com/s2/favicons?sz=64&domain=coriolis.io
 // @grant           none
 // @license      	MIT
+// @downloadURL https://update.greasyfork.org/scripts/528781/Coriolis%20-%20Save%20export%20to%20file.user.js
+// @updateURL https://update.greasyfork.org/scripts/528781/Coriolis%20-%20Save%20export%20to%20file.meta.js
 // ==/UserScript==
 
 
@@ -18,12 +20,12 @@
 
     const menuElement = await waitForElm("#coriolis .menu-list ul")
 
-    const menuEntryBackup = menuElement.querySelector("li:nth-child(1) > a")
+    const menuEntryBackup = await waitForElm("li:nth-child(1) > a", menuElement)
     menuEntryBackup.addEventListener('click', () => {
         createDLBtn('backup')
     })
 
-    const menuEntryExport = menuElement.querySelector("li:nth-child(2) > a")
+    const menuEntryExport = await waitForElm("li:nth-child(2) > a", menuElement)
     menuEntryExport.addEventListener('click', () => {
         createDLBtn('detailed-export')
     })
