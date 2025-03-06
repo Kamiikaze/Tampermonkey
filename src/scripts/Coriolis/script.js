@@ -2,7 +2,7 @@
 // @name            Coriolis - Save export to file
 // @name:de         Coriolis - Export in Datei speichern
 // @namespace       https://greasyfork.org/users/928242
-// @version         1.0.1
+// @version         1.0.2
 // @description  	Add a button on coriolis backup / detailed-export, to save the output as file.
 // @description:de	Füge einen Button zu "Coriolis Backup / Detailed-Export" hinzu, um die Ausgabe als Datei zu speichern.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -16,25 +16,36 @@
 // ==/UserScript==
 
 
+const settingsElSelector = "#coriolis .r.menu .menu-header";
+const menuElSelector = "#coriolis .menu-list ul";
+const menuEntryBackupElSelector = "li:nth-child(1) > a";
+const menuEntryExportElSelector = "li:nth-child(2) > a";
+const modalElSelector = ".modal";
+
+
 (async () => {
 
-    const menuElement = await waitForElm("#coriolis .menu-list ul")
+    const settingsElement = await waitForElm(settingsElSelector)
+    settingsElement.addEventListener('click', async () => {
 
-    const menuEntryBackup = await waitForElm("li:nth-child(1) > a", menuElement)
-    menuEntryBackup.addEventListener('click', () => {
-        createDLBtn('backup')
-    })
+        const menuElement = await waitForElm(menuElSelector)
 
-    const menuEntryExport = await waitForElm("li:nth-child(2) > a", menuElement)
-    menuEntryExport.addEventListener('click', () => {
-        createDLBtn('detailed-export')
+        const menuEntryBackup = await waitForElm(menuEntryBackupElSelector, menuElement)
+        menuEntryBackup.addEventListener('click', () => {
+            createDLBtn('backup')
+        })
+
+        const menuEntryExport = await waitForElm(menuEntryExportElSelector, menuElement)
+        menuEntryExport.addEventListener('click', () => {
+            createDLBtn('detailed-export')
+        })
     })
 
 })();
 
 
 async function createDLBtn(type) {
-    const modal = await waitForElm('.modal')
+    const modal = await waitForElm(modalElSelector)
 
     const btn = document.createElement("button")
     btn.className = "r cap"
@@ -48,7 +59,7 @@ async function createDLBtn(type) {
 }
 
 async function getJsonData() {
-    const modal = await waitForElm('.modal')
+    const modal = await waitForElm(modalElSelector)
     const textfield = await waitForElm("textarea", modal)
 
     return JSON.parse(textfield.value)
