@@ -2,7 +2,7 @@
 // @name            Inara - Commodites Total Price
 // @name:de         Inara - Waren Gesamt Preis
 // @namespace       https://greasyfork.org/users/928242
-// @version         1.0.1
+// @version         1.0.2
 // @description  	Adds a filter to enter buy/sell amount and an additional column with the total price.
 // @description:de	Fügt einen Filter zur Eingabe des Kauf-/Verkaufsbetrags und eine zusätzliche Spalte mit dem Gesamtpreis hinzu.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -11,6 +11,8 @@
 // @icon            https://www.google.com/s2/favicons?sz=64&domain=inara.cz
 // @grant           none
 // @license      	MIT
+// @downloadURL https://update.greasyfork.org/scripts/528406/Inara%20-%20Commodites%20Total%20Price.user.js
+// @updateURL https://update.greasyfork.org/scripts/528406/Inara%20-%20Commodites%20Total%20Price.meta.js
 // ==/UserScript==
 
 // # # # # # #
@@ -42,9 +44,11 @@ if (mainblock) {
       <span class="helpmark">?</span>
     </span></label>`
 
+    const savedAmount = localStorage.getItem("inara_filter-amount")
+
     const amountInput = document.createElement('input');
     amountInput.type = 'number';
-    amountInput.value = amountDefaultValue;
+    amountInput.value = savedAmount || amountDefaultValue;
     amountInput.id = 'desiredAmount';
     amountInput.style.marginBottom = '10px';
 
@@ -61,6 +65,8 @@ function updateTotalPrices() {
         .value, 10) || 0;
     const table = document.querySelector('table');
     if (!table) return;
+
+    localStorage.setItem("inara_filter-amount", desiredQuantity)
 
     // Überschrift für Gesamtpreis einfügen, falls noch nicht vorhanden
     const headerRow = table.querySelector('thead tr');
