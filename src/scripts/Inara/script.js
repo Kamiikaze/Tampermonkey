@@ -2,7 +2,7 @@
 // @name            Inara - Commodites Total Price
 // @name:de         Inara - Waren Gesamt Preis
 // @namespace       https://greasyfork.org/users/928242
-// @version         1.0.2
+// @version         1.0.3
 // @description  	Adds a filter to enter buy/sell amount and an additional column with the total price.
 // @description:de	Fügt einen Filter zur Eingabe des Kauf-/Verkaufsbetrags und eine zusätzliche Spalte mit dem Gesamtpreis hinzu.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -92,7 +92,7 @@ function updateTotalPrices() {
             let parts = priceStr.split(',');
             if (parts[1] && parts[1].length === 3) return ',';
         }
-        return '';
+        return ',';
     }
 
     // Funktion zur Formatierung einer Zahl mit Tausender-Trennzeichen
