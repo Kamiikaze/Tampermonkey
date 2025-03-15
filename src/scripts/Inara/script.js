@@ -2,7 +2,7 @@
 // @name            Inara - Commodites Total Price
 // @name:de         Inara - Waren Gesamt Preis
 // @namespace       https://greasyfork.org/users/928242
-// @version         1.0.4
+// @version         1.1.0
 // @description  	Adds a filter to enter buy/sell amount and an additional column with the total price.
 // @description:de	Fügt einen Filter zur Eingabe des Kauf-/Verkaufsbetrags und eine zusätzliche Spalte mit dem Gesamtpreis hinzu.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -22,8 +22,8 @@
 // Row-Name for Total Price
 const totalPriceText = "Total Price"
 
-// Default value for total price calculations
-const amountDefaultValue = 100
+// Default sort by Total Price
+const sortTotalPrice = true
 
 
 /*** DO NOT CHANGE BELOW ***/
@@ -46,7 +46,7 @@ if (mainblock) {
 
     const amountInput = document.createElement('input');
     amountInput.type = 'number';
-    amountInput.value = savedAmount || amountDefaultValue;
+    amountInput.value = savedAmount || 512;
     amountInput.id = 'desiredAmount';
     amountInput.style.marginBottom = '10px';
 
@@ -94,8 +94,23 @@ function updateTotalPrices() {
     if (!headerRow.querySelector('.total-header')) {
         const totalHeader = document.createElement('th');
         totalHeader.textContent = totalPriceText;
-        totalHeader.className = 'total-header alignright';
+        totalHeader.className = [
+            'total-header',
+            'alignright',
+            'sorting',
+        ].join(" ")
+        totalHeader.setAttribute("tabindex", 0)
+        totalHeader.setAttribute("rowspan", 1)
+        totalHeader.setAttribute("colspan", 1)
         headerRow.insertBefore(totalHeader, headerRow.querySelector('th:nth-child(7)'));
+
+        setTimeout(() => {
+            if (!sortTotalPrice) return
+
+            const headerCell = document.querySelector(".total-header")
+            headerCell.click()
+            headerCell.click()
+        }, 2000)
     }
 
     // Funktion zum Erkennen des Tausender-Trennzeichens
@@ -187,10 +202,14 @@ function updateTotalPrices() {
             if (!totalPriceCell) {
                 totalPriceCell = document.createElement('td');
                 totalPriceCell.className = 'alignright total-price';
+                totalPriceCell.setAttribute("data-order", totalPrice())
                 row.insertBefore(totalPriceCell, row.querySelector('td:nth-child(7)'));
             }
             totalPriceCell.textContent = displayTotal;
-            supplyCell.className = 'alignright' + lowSupplyClass;
+            supplyCell.className = [
+                'alignright',
+                lowSupplyClass ? 'low-supply' : ""
+            ].join(" ")
         }
     });
 }
