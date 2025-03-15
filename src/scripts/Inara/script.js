@@ -2,7 +2,7 @@
 // @name            Inara - Commodites Total Price
 // @name:de         Inara - Waren Gesamt Preis
 // @namespace       https://greasyfork.org/users/928242
-// @version         1.0.3
+// @version         1.0.4
 // @description  	Adds a filter to enter buy/sell amount and an additional column with the total price.
 // @description:de	Fügt einen Filter zur Eingabe des Kauf-/Verkaufsbetrags und eine zusätzliche Spalte mit dem Gesamtpreis hinzu.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -35,16 +35,14 @@ if (mainblock) {
     const filterContainer = document.createElement('div')
     filterContainer.id = "custom-filters"
 
+    const savedAmount = localStorage.getItem("inara_filter-amount")
     const amountFilter = document.createElement('div')
     amountFilter.id = "custom-filter-amount"
-
     amountFilter.innerHTML = `<label class="formlabelside">
     Buy/Sell Amount
     <span class="tooltip tooltipnoline" data-tooltiptext="Amount for total price calculations. If supply is less than amount, supply is highlighted red.">
       <span class="helpmark">?</span>
     </span></label>`
-
-    const savedAmount = localStorage.getItem("inara_filter-amount")
 
     const amountInput = document.createElement('input');
     amountInput.type = 'number';
@@ -54,7 +52,27 @@ if (mainblock) {
 
     amountFilter.append(amountInput)
 
+
+    const savedBonus = localStorage.getItem("inara_filter-bonus")
+    const bonusFilter = document.createElement('div')
+    bonusFilter.id = "custom-filter-amount"
+    bonusFilter.innerHTML = `<label class="formlabelside">
+    PP Bonus
+    <span class="tooltip tooltipnoline" data-tooltiptext="Percentage of PP bonus profit. Will be included in 'Total Price' calculations.">
+      <span class="helpmark">?</span>
+    </span></label>`
+
+    const bonusInput = document.createElement('input');
+    bonusInput.type = 'number';
+    bonusInput.value = savedBonus || 0;
+    bonusInput.id = 'ppBonus';
+    bonusInput.style.marginBottom = '10px';
+
+    bonusFilter.append(bonusInput)
+
+
     filterContainer.append(amountFilter)
+    filterContainer.append(bonusFilter)
 
     mainblock.insertBefore(filterContainer, mainblock.firstChild);
 }
@@ -63,10 +81,13 @@ if (mainblock) {
 function updateTotalPrices() {
     const desiredQuantity = parseInt(document.querySelector('#desiredAmount')
         .value, 10) || 0;
+    const ppBonus = parseInt(document.querySelector('#ppBonus')
+        .value, 10) || 0;
     const table = document.querySelector('table');
     if (!table) return;
 
     localStorage.setItem("inara_filter-amount", desiredQuantity)
+    localStorage.setItem("inara_filter-bonus", ppBonus)
 
     // Überschrift für Gesamtpreis einfügen, falls noch nicht vorhanden
     const headerRow = table.querySelector('thead tr');
@@ -112,6 +133,7 @@ function updateTotalPrices() {
         // 6. Zelle als Unit-Price
         const unitPriceCell = row.querySelector('td:nth-child(6)');
         const supplyCell = row.querySelector('td:nth-child(5)');
+        const hasPPbonus = !!row.querySelector("td .ppbonusicon")
 
         if (unitPriceCell) {
             // Preis extrahieren (nur Ziffern, Komma und Punkt)
@@ -136,11 +158,20 @@ function updateTotalPrices() {
             }
 
             // Gesamtpreis berechnen
-            const totalPrice = (numericPrice * desiredQuantity).toFixed();
+            const totalPrice = (() => {
+                let price = (numericPrice * desiredQuantity);
+                if (hasPPbonus && ppBonus > 0) {
+                    price = price + (price/100)*ppBonus
+                }
+
+                return price.toFixed();
+            })
+
+
 
             const formattedTotal = thousandSep ?
-                formatWithThousandSeparator(totalPrice, thousandSep) + ' Cr' :
-                totalPrice + ' Cr';
+                formatWithThousandSeparator(totalPrice(), thousandSep) + ' Cr' :
+                totalPrice() + ' Cr';
 
             // Append "~" if the price was a range
             const displayTotal = isApproximate ? `~${formattedTotal}` : formattedTotal;
@@ -193,7 +224,7 @@ GM_addStyle(`
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-evenly;
+    justify-content: center;
     gap: 5px 10px;
     padding: 10px;
 }
@@ -213,6 +244,8 @@ td.low-supply {
 // 3. Event-Listener mit debounce, um bei Änderung des Input-Felds die Tabelle zu aktualisieren
 const debouncedUpdate = debounce(updateTotalPrices, 500);
 document.querySelector('#desiredAmount')
+    .addEventListener('input', debouncedUpdate);
+document.querySelector('#ppBonus')
     .addEventListener('input', debouncedUpdate);
 
 // Initiale Berechnung beim Laden
