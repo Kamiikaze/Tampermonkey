@@ -11,6 +11,16 @@
 
 /* global Toastify */
 
+// https://stackoverflow.com/questions/61964265/getting-error-this-document-requires-trustedhtml-assignment-in-chrome
+if (window.trustedTypes && window.trustedTypes.createPolicy && !window.trustedTypes.defaultPolicy) {
+    window.trustedTypes.createPolicy('default', {
+        createHTML: string => string
+        // Optional, only needed for script (url) tags
+        //,createScriptURL: string => string
+        //,createScript: string => string,
+    });
+}
+
 /**
  * @description Custom Logger
  */
