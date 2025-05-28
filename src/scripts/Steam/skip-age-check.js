@@ -2,7 +2,7 @@
 // @name       		Skip Steam Age Check
 // @name:de			Steam Altersprüfung überspringen
 // @namespace  		https://greasyfork.org/users/928242
-// @version    		1.0
+// @version    		1.0.1
 // @description		Skip the age check on the Steam website
 // @description:de	Überspringen der Altersprüfung auf der Steam-Website
 // @author       	Kamikaze (https://github.com/Kamiikaze)
@@ -13,6 +13,10 @@
 // @run-at       	document-ready
 // @license      	MIT
 // ==/UserScript==
+
+// ==OpenUserJS==
+// @author Kamikaze
+// ==/OpenUserJS==
 
 setInterval( () => {
 	console.log("Trying to Skip Age check..")
