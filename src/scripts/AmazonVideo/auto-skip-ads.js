@@ -2,7 +2,7 @@
 // @name         	Auto Skip ADs, Summary & More | Amazon Video
 // @name:de         Automatisches Überspringen von Werbung, Zusammenfassung & mehr | Amazon Video
 // @namespace   	https://greasyfork.org/users/928242
-// @version     	0.9
+// @version     	0.9.1
 // @description  	Automatically skips ads, recaps, previews and more when watching videos on Amazon Prime.
 // @description:de  Überspringt automatisch Werbung, Zusammenfassungen, Vorschauen und mehr, wenn du Videos auf Amazon Prime ansiehst.
 // @author       	Kamikaze (https://github.com/Kamiikaze)
