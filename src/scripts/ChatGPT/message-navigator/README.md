@@ -1,10 +1,5 @@
 # ChatGPT Message Navigator
 
-**Version:** 1.0.1
-**Author:** Kamikaze ([GitHub](https://github.com/Kamiikaze))
-
----
-
 ## Description
 
 Seamlessly browse ChatGPT conversation messages with handy up/down buttons and live highlighting. Navigate through turns in any ChatGPT chat stream for quicker review and context.
