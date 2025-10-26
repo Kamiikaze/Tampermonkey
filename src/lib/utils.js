@@ -2,10 +2,9 @@
 // @name        	Kamikaze' Script Utils
 // @namespace    	https://greasyfork.org/users/928242
 // @description  	Custom Functions for Kamikaze's Scripts
-// @version    		1.1.12
+// @version    		1.1.13
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
-// @grant           GM_addStyle
 // ==/UserScript==
 
 /* jshint esversion: 11 */
@@ -103,6 +102,10 @@ function notify(text, duration = 5000, type = "default") {
         },
         className: type,
         stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+            borderRadius: "50px",
+            boxShadow: "0px 0px 20px 0px #0f1620",
+        }
     }).showToast();
 }
 
@@ -255,19 +258,3 @@ async function getStreamData() {
 
     return data
 }
-
-
-GM_addStyle(`
-    .toastify {
-        background: #243743;
-        border: 2px solid #637cf9;
-        border-radius: 50px;
-        box-shadow: 0px 0px 20px 0px #0f1620;
-    }
-    
-    .toastify.error {
-        background: #9c0000;
-        border: 2px solid #f96363;
-    }
-    
-`)
