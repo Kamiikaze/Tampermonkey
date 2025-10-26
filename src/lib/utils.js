@@ -2,7 +2,7 @@
 // @name        	Kamikaze' Script Utils
 // @namespace    	https://greasyfork.org/users/928242
 // @description  	Custom Functions for Kamikaze's Scripts
-// @version    		1.1.11
+// @version    		1.1.12
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
 // @grant           GM_addStyle
