@@ -5,6 +5,7 @@
 // @version    		1.1.11
 // @author       	Kamikaze (https://github.com/Kamiikaze)
 // @license     	MIT
+// @grant           GM_addStyle
 // ==/UserScript==
 
 /* jshint esversion: 11 */
@@ -256,7 +257,7 @@ async function getStreamData() {
 }
 
 
-addGlobalStyle(`
+GM_addStyle(`
     .toastify {
         background: #243743;
         border: 2px solid #637cf9;
@@ -269,4 +270,4 @@ addGlobalStyle(`
         border: 2px solid #f96363;
     }
     
-`, true)
+`)
