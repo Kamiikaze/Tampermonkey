@@ -2,11 +2,11 @@
 // @name            Adjust Instant-Buttons Sound Volume | MyInstants
 // @name:de         Anpassung der Instant-Button Lautstärke | MyInstants
 // @namespace       https://greasyfork.org/users/928242
-// @version         1.2
+// @version         1.3
 // @description     Adjust Instant-Buttons Sound Volume
 // @description:de  Anpassung der Instant-Button Lautstärke
 // @author          Kamikaze
-// @match           https://www.myinstants.com/de/*
+// @match           https://www.myinstants.com/*
 // @grant           none
 // @license         MIT
 // ==/UserScript==
