@@ -1,108 +1,102 @@
 // ==UserScript==
-// @name          	Adjust Instant-Buttons Sound Volume | MyInstants
-// @name:de			Anpassung der Instant-Button Lautstärke | MyInstants
-// @namespace    	https://greasyfork.org/users/928242
-// @version        	1.1
-// @description   	Adjust Instant-Buttons Sound Volume
-// @description:de	Anpassung der Instant-Button Lautstärke
-// @author       	Kamikaze (https://github.com/Kamiikaze)
-// @supportURL      https://github.com/Kamiikaze/Tampermonkey/issues
-// @icon            https://www.google.com/s2/favicons?sz=64&domain=myinstants.com
+// @name            Adjust Instant-Buttons Sound Volume | MyInstants
+// @name:de         Anpassung der Instant-Button Lautstärke | MyInstants
+// @namespace       https://greasyfork.org/users/928242
+// @version         1.2
+// @description     Adjust Instant-Buttons Sound Volume
+// @description:de  Anpassung der Instant-Button Lautstärke
+// @author          Kamikaze
 // @match           https://www.myinstants.com/de/*
-// @grant        	none
-// @license        	MIT
+// @grant           none
+// @license         MIT
 // ==/UserScript==
 
+(async () => {
+    const savedVolume = parseFloat(localStorage.getItem("soundVol")) || 0.5;
 
-/* global audio */
+    const audio = await waitForAudio();
+    if (!audio) return;
 
-const savedVolume = window.localStorage.getItem("soundVol")
+    audio.volume = savedVolume;
 
-setTimeout(() => {
+    const container = document.createElement("div");
+    container.id = "volume-control-container";
+    container.classList.add("sticky");
 
-    const instantsContainer = document.querySelector("#instants_container");
+    const label = document.createElement("label");
+    label.textContent = "Volume:";
 
-    const volumeLabel = document.createElement("label");
-    volumeLabel.textContent = "Volume:";
+    const range = document.createElement("input");
+    range.type = "range";
+    range.min = "0";
+    range.max = "1";
+    range.step = "0.1";
+    range.value = savedVolume;
 
-    const volumeRange = document.createElement("input");
-    volumeRange.type = "range";
-    volumeRange.id = "volume-range";
-    volumeRange.min = "0";
-    volumeRange.max = "100";
-    volumeRange.step = "0.1";
-    volumeRange.value = savedVolume || "50";
+    const number = document.createElement("input");
+    number.type = "number";
+    number.min = "0";
+    number.max = "1";
+    number.step = "0.1";
+    number.value = savedVolume;
 
-    audio.volume = savedVolume / 100 || volumeRange.value / 100;
-
-
-    const volumeNumber = document.createElement("input");
-    volumeNumber.type = "number";
-    volumeNumber.id = "volume-number";
-    volumeNumber.min = "0";
-    volumeNumber.max = "100";
-    volumeNumber.step = "0.5";
-    volumeNumber.value = savedVolume || "50";
-
-
-    const volumeControlContainer = document.createElement("div");
-    volumeControlContainer.id = "volume-control-container"
-    volumeControlContainer.classList.add("sticky")
-    volumeControlContainer.appendChild(volumeLabel);
-    volumeControlContainer.appendChild(volumeRange);
-    volumeControlContainer.appendChild(volumeNumber);
-
-    instantsContainer.before(volumeControlContainer);
-
-
-    volumeRange.addEventListener("input", () => {
-        changeVolume(volumeRange.value);
-    });
-
-    volumeNumber.addEventListener("input", () => {
-        changeVolume(volumeNumber.value);
-    });
+    container.append(label, range, number);
+    document.body.appendChild(container);
 
     function changeVolume(vol) {
-        audio.volume = vol / 100;
-        volumeNumber.value = vol;
-        volumeRange.value = vol;
-        window.localStorage.setItem("soundVol", parseFloat(vol).toFixed(1))
+        const v = Math.min(1, Math.max(0, parseFloat(vol)));
+        audio.volume = v;
+        range.value = v;
+        number.value = v;
+        localStorage.setItem("soundVol", v.toFixed(1));
     }
 
+    range.addEventListener("input", e => changeVolume(e.target.value));
+    number.addEventListener("input", e => changeVolume(e.target.value));
 
     const style = document.createElement("style");
     style.textContent = `
+        #volume-control-container {
+            display: flex;
+            gap: 15px;
+            background: rgba(0,0,0,.8);
+            padding: 10px 20px;
+            border-radius: 10px;
+            color: white;
+        }
 
-  #volume-control-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    background-color: rgb(0 0 0 / 50%);
-    width: fit-content;
-    padding: 10px 20px;
-    margin: auto;
-    border-radius: 10px;
-  }
+        #volume-control-container.sticky {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            z-index: 1000;
+        }
 
-  #volume-control-container.sticky {
-      position: fixed;
-      top: 90px;
-      right: 20px;
-      z-index: 100;
-      background-color: rgba(0, 0, 0, 0.8);
-  }
-
-  #volume-control-container input:nth-child(3) {
-    max-width: 65px;
-  }
-
-`;
-
+        #volume-control-container input[type="number"] {
+            width: 60px;
+        }
+    `;
     document.head.appendChild(style);
+})();
 
+function waitForAudio() {
+    return new Promise(resolve => {
+        const check = () => {
+            if (window.audio instanceof HTMLAudioElement) {
+                resolve(window.audio);
+                return true;
+            }
+            return false;
+        };
 
-}, 1000)
+        if (check()) return;
+
+        const obs = new MutationObserver(() => {
+            if (check()) obs.disconnect();
+        });
+
+        obs.observe(document.body, { childList: true, subtree: true });
+
+        setTimeout(() => resolve(null), 5000);
+    });
+}
